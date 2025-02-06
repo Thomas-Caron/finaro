@@ -23,3 +23,9 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> file system ###
+.DS_Store
+.yarn-integrity
+settings.json
+###< file system ###

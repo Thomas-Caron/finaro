@@ -1,0 +1,17 @@
+.apexcharts-canvas {
+    .apexcharts-tooltip {
+        background: rgba( 255, 255, 255, 0.05 ) !important;
+        backdrop-filter: blur( 9px );
+        -webkit-backdrop-filter: blur( 9px );
+    }
+}
+
+.dark {
+    .apexcharts-canvas {
+        .apexcharts-tooltip {
+            background: rgba( 255, 255, 255, 0.05 ) !important;
+            backdrop-filter: blur( 9px );
+            -webkit-backdrop-filter: blur( 9px );
+        }
+    }
+}

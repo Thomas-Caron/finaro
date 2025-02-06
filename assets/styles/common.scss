@@ -1,0 +1,27 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+
+    main {
+        flex-grow: 1;
+        padding: 64px 0;
+    }
+}
+
+.common-bg-gradient {
+    z-index: -1;
+    background-image: radial-gradient(circle farthest-corner at 50% 50%, violet, blue);
+    opacity: .4;
+    filter: blur(200px);
+    pointer-events: none;
+    border-radius: 100%;
+    width: 980px;
+    height: 400px;
+    position: fixed;
+    inset: 100px auto auto 50%;
+}

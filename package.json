@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "sass:watch": "php bin/console sass:build --watch",
+    "tw:watch": "php bin/console tailwind:build --watch"
+  }
+}

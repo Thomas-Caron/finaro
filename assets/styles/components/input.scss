@@ -1,0 +1,13 @@
+input[type="range"]::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+    background-color: rgb(245 245 244);
+    border: solid 1px rgb(231 229 228);
+}
+
+.dark {
+    input[type="range"]::-webkit-slider-thumb {
+        background-color: rgb(120 113 108);
+        border: solid 1px rgb(87 83 78);
+    }
+}
