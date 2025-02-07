@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <div class="bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 max-w-lg rounded-xl mx-auto p-5">
+        <h1 class="text-2xl text-stone-950 dark:text-stone-50">Connexion</h1>
+        <div class="flex my-3">
+            <span class="text-stone-300 dark:text-stone-700 me-1">Vous n'avez pas encore de compte ?</span>
+            <twig:Button:Link
+                class="text-stone-950 dark:text-stone-50 hover:underline"
+                url="{{ path('finaro_register') }}"
+                text="S'inscrire"
+            />
+        </div>
+
+        <form method="post">
+            <twig:Form:Input:Input
+                label="Adresse email"
+                type="email"
+                id="input_email"
+                containerClass="mb-3"
+                name="email"
+                value="{{ last_username }}"
+                autofocus="{{ true }}"
+            />
+
+            <twig:Form:Input:Input
+                label="Mot de passe"
+                type="password"
+                id="input_password"
+                containerClass="mb-3"
+                name="password"
+            />
+
+            <twig:Form:Input:Input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            />
+
+            {% if error %}
+                <twig:Alert:Alert
+                    type="error"
+                    text="{{ error.messageKey|trans(error.messageData, 'security') }}"
+                />
+            {% endif %}
+
+            <twig:Button:Button
+                class="w-full my-5"
+                color="gradient"
+                type="submit"
+                text="Se connecter"
+            />
+        </form>
+
+        <twig:Button:Link
+            class="block text-center text-stone-950 dark:text-stone-50 hover:underline"
+            url="/"
+            text="Mot de passe oublié ?"
+        />
+    <div>
+{% endblock %}
