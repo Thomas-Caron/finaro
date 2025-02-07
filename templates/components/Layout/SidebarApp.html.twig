@@ -1,0 +1,55 @@
+<aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-stone-50 border-r border-stone-200 sm:translate-x-0 dark:bg-stone-900 dark:border-stone-700" aria-label="Sidebar">
+   <div class="h-full overflow-y-auto bg-stone-50 dark:bg-stone-900 divide-y divide-stone-200 dark:divide-stone-700">
+      <ul class="px-3 pb-3 space-y-2 font-medium">
+         <li>
+            <a href="{{ path('finaro_app_dashboard') }}" class="flex items-center p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 group">
+               <twig:ux:icon name="mage:dashboard-2" class="shrink-0 w-5 h-5 text-stone-700 transition duration-75 dark:text-stone-400 group-hover:text-stone-900 dark:group-hover:text-stone-300" />
+               <span class="flex-1 ms-3 whitespace-nowrap">Dashboard</span>
+            </a>
+         </li>
+         <li>
+            <button type="button" class="flex items-center w-full p-2 text-base text-stone-700 transition duration-75 rounded-lg group hover:bg-stone-200/30 dark:text-stone-400 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300" aria-controls="dropdown-account" data-collapse-toggle="dropdown-account">
+                  <twig:ux:icon name="ph:coins-light" class="w-4 h-4" />
+                  <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Comptes</span>
+                  <twig:ux:icon name="ep:arrow-down-bold" class="w-4 h-4" />
+            </button>
+            <ul id="dropdown-account" class="hidden py-2 space-y-2">
+                  <li>
+                     <a href="{{ path('finaro_app_account_current') }}" class="flex items-center w-full p-2 text-stone-700 transition duration-75 rounded-lg pl-11 group hover:bg-stone-200/30 dark:text-stone-400 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300">Compte courant</a>
+                  </li>
+                  <li>
+                     <a href="{{ path('finaro_app_account_common') }}" class="flex items-center w-full p-2 text-stone-700 transition duration-75 rounded-lg pl-11 group hover:bg-stone-200/30 dark:text-stone-400 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300">Compte commun</a>
+                  </li>
+            </ul>
+         </li>
+         <li>
+            <button type="button" class="flex items-center w-full p-2 text-base text-stone-700 transition duration-75 rounded-lg group hover:bg-stone-200/30 dark:text-stone-400 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300" aria-controls="dropdown-simulator" data-collapse-toggle="dropdown-simulator">
+                  <twig:ux:icon name="hugeicons:calculator" class="w-4 h-4" />
+                  <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Simulateurs</span>
+                  <twig:ux:icon name="ep:arrow-down-bold" class="w-4 h-4" />
+            </button>
+            <ul id="dropdown-simulator" class="hidden py-2 space-y-2">
+                  <li>
+                     <a href="{{ path('finaro_app_simulator_mortgage_loan') }}" class="flex items-center w-full p-2 text-stone-700 transition duration-75 rounded-lg pl-11 group hover:bg-stone-200/30 dark:text-stone-400 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300">Crédit immobilier</a>
+                  </li>
+                  <li>
+                     <a href="{{ path('finaro_app_simulator_compound_interest') }}" class="flex items-center w-full p-2 text-stone-700 transition duration-75 rounded-lg pl-11 group hover:bg-stone-200/30 dark:text-stone-400 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300">Intérêts composés</a>
+                  </li>
+            </ul>
+         </li>
+      </ul>
+      
+      <ul class="p-3 space-y-2 font-medium">
+         <li>
+            <a href="{{ path('finaro_logout') }}" class="flex items-center p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 group">
+               <twig:ux:icon name="quill:off" class="shrink-0 w-5 h-5 text-stone-700 transition duration-75 dark:text-stone-400 group-hover:text-stone-900 dark:group-hover:text-stone-300" />
+               <span class="flex-1 ms-3 whitespace-nowrap">Se déconnecter</span>
+            </a>
+         </li>
+      </ul>
+
+      <div class="flex items-center justify-center p-3">
+         <twig:Button:SwitchMode />
+      </div>
+   </div>
+</aside>

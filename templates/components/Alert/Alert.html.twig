@@ -1,0 +1,16 @@
+<div role="alert" class="
+    p-4 text-sm flex flex-row border rounded-lg
+    {% if 'error' == type %}
+     text-red-800  bg-red-100 border-red-800 dark:bg-red-400 dark:text-red-800
+    {% elseif 'success' == type %}
+     text-green-800 bg-green-100 border-green-800 dark:bg-green-400 dark:text-green-800
+    {% endif %}
+    {{ class }}
+">
+    <twig:ux:icon 
+        name="{{ this.getIcon }}"
+        height="18px"
+        class="me-2"
+    />
+    {{ text }}
+</div>

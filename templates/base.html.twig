@@ -1,17 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        {% block stylesheets %}{% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
-    {% block body %}{% endblock %}
+    <body class="bg-white dark:bg-stone-900">
+        {% if app.debug %}
+            <div class="pointer-events-none text-center text-grey-900 dark:text-white absolute w-full mt-5" style="z-index: 9999;">
+                <p class="max-sm:block hidden">XS</p>
+                <p class="hidden sm:block md:hidden">SM</p>
+                <p class="hidden md:block lg:hidden">MD</p>
+                <p class="hidden lg:block xl:hidden">LG</p>
+                <p class="hidden xl:block 2xl:hidden">XL</p>
+                <p class="hidden 2xl:block">2XL</p>
+            </div>
+        {% endif %}
+        <header>
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') or 'finaro_homepage' == app.request.attributes.get('_route') %}
+               <twig:Layout:Header:Nav:Navbar 
+                    isConnected="{{ is_granted('IS_AUTHENTICATED_FULLY') }}"
+                    firstname="{{ app.user ? app.user.firstname : ''}}"
+                    lastname="{{ app.user ? app.user.lastname : '' }}"
+                    email="{{ app.user ? app.user.email : '' }}"
+               />
+            {% else %}
+               <twig:Layout:Header:Nav:NavbarApp
+                    firstname="{{ app.user.firstname }}"
+                    lastname="{{ app.user.lastname }}"
+                    email="{{ app.user.email }}"
+                >
+            {% endif %}
+            {% block header %}{% endblock %}
+        </header>
+        <main>
+            <div class="common-bg-gradient"></div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and 'finaro_homepage' != app.request.attributes.get('_route') %}
+                <twig:Layout:SidebarApp />
+            {% endif %}
+            {% block body %}{% endblock %}
+        </main>
+        <footer>
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') or 'finaro_homepage' == app.request.attributes.get('_route') %}
+                <twig:Layout:Footer:Footer />
+            {% else %}
+                <twig:Layout:Footer:FooterApp />
+            {% endif %}
+            {% block footer %}{% endblock %}
+        </footer>
     </body>
 </html>
