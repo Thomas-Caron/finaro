@@ -1,0 +1,47 @@
+<div class="{{ containerClass }}" data-controller="slider">
+    {% if label %}
+        <label for="{{ id }}" class="block mb-2 text-sm font-medium {% if error %}text-red-700 dark:text-red-500{% else %}text-stone-900 dark:text-stone-50{% endif %}">{{ label }}</label>
+    {% endif %}
+    <div class="relative w-full pb-8">
+        <input 
+            type="range"
+            id="{{ id }}"
+            name="{{ name }}"
+            class="w-full h-2 bg-stone-300 rounded-lg appearance-none cursor-pointer dark:bg-stone-700 {{ class }}"
+            min="{{ min }}"
+            max="{{ max }}"
+            step="{{ step }}"
+            value="{{ value }}"
+            data-action="input->slider#updateValue {{ dataAction ?? ''}}"
+            {% if dataActionParam %}data-live-action-param="{{ dataActionParam }}"{% endif %}
+            data-slider-target="input"
+        >
+
+        <div 
+            class="absolute top-6 left-0 whitespace-nowrap w-max transform  bg-stone-200/30 dark:bg-stone-700/40 text-sm px-2 py-1 rounded-md text-black dark:text-white"
+            data-slider-target="valueContainer"
+        >
+            <span data-slider-target="value" data-unit="{{ unit }}">
+                {% if 'currency' == unit %}
+                    {{ value|currency }}
+                {% elseif 'percentage' == unit %}
+                    {{ value|percentage }}
+                {% elseif 'year' == unit %}
+                    {{ value|year }}
+                {% elseif 'month' == unit %}
+                    {{ value|month }}
+                {% else %}
+                    {{ value|convert }}
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    {% if error %}
+        <twig:Alert:Alert
+            type="error"
+            class="mt-3"
+            text="{{ this.getError }}"
+        />
+    {% endif %}
+</div>
