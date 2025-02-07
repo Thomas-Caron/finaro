@@ -1,0 +1,118 @@
+<div 
+    {{ attributes }}
+    class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-4"
+    data-action="live:connect->live#action"
+    data-live-action-param="calculate"
+>
+    <div class="rounded-lg shadow-sm bg-stone-200/20 dark:bg-stone-700/10 p-4 md:p-6 flex flex-col justify-between">
+        {{ form_start(form, { 'attr': { 
+            'data-turbo': 'false',
+        }}) }}
+            <twig:Form:Input:Slider
+                label="{{ form.initialCapital.vars.label }}"
+                id="{{ form.initialCapital.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.initialCapital.vars.full_name }}"
+                min="0"
+                max="100000"
+                step="1000"
+                unit="currency"
+                value="{{ form.initialCapital.vars.data }}"
+                dataAction="live#action"
+                dataActionParam="debounce(300)|calculate"
+            />
+
+            <twig:Form:Input:Slider
+                label="{{ form.monthlySavings.vars.label }}"
+                id="{{ form.monthlySavings.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.monthlySavings.vars.full_name }}"
+                min="0"
+                max="10000"
+                step="50"
+                unit="currency"
+                value="{{ form.monthlySavings.vars.data }}"
+                dataAction="live#action"
+                dataActionParam="debounce(300)|calculate"
+            />
+
+            <twig:Form:Input:Slider
+                label="{{ form.investmentHorizon.vars.label }}"
+                id="{{ form.investmentHorizon.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.investmentHorizon.vars.full_name }}"
+                min="1"
+                max="50"
+                step="1"
+                unit="year"
+                value="{{ form.investmentHorizon.vars.data }}"
+                dataAction="live#action"
+                dataActionParam="debounce(300)|calculate"
+            />
+
+            <twig:Form:Input:Slider
+                label="{{ form.interestRate.vars.label }}"
+                id="{{ form.interestRate.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.interestRate.vars.full_name }}"
+                min="0"
+                max="20"
+                step="0.1"
+                unit="percentage"
+                value="{{ form.interestRate.vars.data }}"
+                dataAction="live#action"
+                dataActionParam="debounce(300)|calculate"
+            />
+
+            <twig:Form:Input:Slider
+                label="{{ form.interestPaymentInterval.vars.label }}"
+                id="{{ form.interestPaymentInterval.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.interestPaymentInterval.vars.full_name }}"
+                min="1"
+                max="12"
+                step="1"
+                unit="month"
+                value="{{ form.interestPaymentInterval.vars.data }}"
+                dataAction="live#action "
+                dataActionParam="debounce(300)|calculate"
+            />
+        {{ form_end(form, { render_rest: false }) }}
+
+        <p class="border-t border-stone-200 dark:border-stone-700 pt-3 text-stone-500/40">
+            Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil financier.
+        </p>
+    </div>
+
+    <div data-controller="chart-compound-interest" class="md:col-span-2 rounded-lg shadow-sm bg-stone-200/20 dark:bg-stone-700/10 p-4 md:p-6">
+        <div class="flex flex-col items-center">
+            <div class="text-lg font-bold text-stone-700 dark:text-stone-100">Capital final</div>
+            <div class="text-lg font-semibold text-stone-700 dark:text-stone-100">
+                {% if chartData is not empty and chartData['capital'] is defined %}
+                    {{ chartData['capital']|last|currency }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="flex justify-between w-full max-w-md mx-auto mt-2">
+            <div class="flex flex-col items-start text-sm text-stone-700 dark:text-stone-100">
+                <span>Intérêts</span>
+                <span>Versements</span>
+            </div>
+            <div class="flex flex-col items-end text-sm font-medium text-stone-700 dark:text-stone-100">
+                <span>
+                    {% if chartData is not empty and chartData['interest'] is defined %}
+                        {{ chartData['interest']|last|currency }}
+                    {% endif %}
+                </span>
+                <span>
+                    {% if chartData is not empty and chartData['saving'] is defined %}
+                        {{ chartData['saving']|last|currency }}
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div id="data-series-chart" data-chart-compound-interest-target="chart" data-chart-value="{{ chartData|json_encode }}"></div>
+    </div>
+</div>

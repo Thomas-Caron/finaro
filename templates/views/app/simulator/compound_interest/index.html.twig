@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simulateur d'intérets composés{% endblock %}
+
+{% block body %}
+    <div class="p-4 sm:ml-64">
+        <h1 class="text-center my-5 text-2xl text-stone-900 dark:text-stone-50">Simulateur d'intérets composés</h1>
+
+        <div class="bg-stone-50/40 dark:bg-stone-900/70 border border-stone-200 dark:border-stone-700 rounded-xl p-5">
+            {{ component('CompoundInterestDataForm', { initialFormData: compoundInterestData }) }}
+        </div>
+    </div>
+{% endblock %}
