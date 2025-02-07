@@ -1,0 +1,111 @@
+<div 
+    {{ attributes }}
+    class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-4"
+    data-action="live:connect->live#action"
+    data-live-action-param="calculate"
+>
+    <div class="rounded-lg shadow-sm bg-stone-200/20 dark:bg-stone-700/10 p-4 md:p-6 flex flex-col justify-between">
+        {{ form_start(form, { 'attr': { 
+            'data-turbo': 'false',
+        }}) }}
+            <twig:Form:Input:Slider
+                label="{{ form.amountBorrowed.vars.label }}"
+                id="{{ form.amountBorrowed.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.amountBorrowed.vars.full_name }}"
+                min="0"
+                max="999999999"
+                step="10000"
+                unit="currency"
+                value="{{ form.amountBorrowed.vars.data }}"
+                dataAction="live#action"
+                dataActionParam="debounce(300)|calculate"
+            />
+
+            <twig:Form:Input:Slider
+                label="{{ form.repaymentPeriod.vars.label }}"
+                id="{{ form.repaymentPeriod.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.repaymentPeriod.vars.full_name }}"
+                min="1"
+                max="30"
+                step="1"
+                unit="year"
+                value="{{ form.repaymentPeriod.vars.data }}"
+                dataAction="live#action"
+                dataActionParam="debounce(300)|calculate"
+            />
+
+            <twig:Form:Input:Slider
+                label="{{ form.interestRate.vars.label }}"
+                id="{{ form.interestRate.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.interestRate.vars.full_name }}"
+                min="0"
+                max="10"
+                step="0.1"
+                unit="percentage"
+                value="{{ form.interestRate.vars.data }}"
+                dataAction="live#action"
+                dataActionParam="debounce(300)|calculate"
+            />
+
+            <twig:Form:Input:Slider
+                label="{{ form.insuranceRate.vars.label }}"
+                id="{{ form.insuranceRate.vars.id }}"
+                containerClass="mb-3"
+                name="{{ form.insuranceRate.vars.full_name }}"
+                min="0"
+                max="5"
+                step="0.05"
+                unit="percentage"
+                value="{{ form.insuranceRate.vars.data }}"
+                dataAction="live#action "
+                dataActionParam="debounce(300)|calculate"
+            />
+        {{ form_end(form, { render_rest: false }) }}
+
+        <p class="border-t border-stone-200 dark:border-stone-700 pt-3 text-stone-500/40">
+            Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil financier.
+        </p>
+    </div>
+
+    <div data-controller="chart-mortgate-loan" class="md:col-span-2 bg-stone-200/20 rounded-lg shadow-sm dark:bg-stone-700/10 p-4 md:p-6">
+        <div class="flex flex-col items-center">
+            <div class="text-lg font-bold text-stone-700 dark:text-stone-100">Mensualités</div>
+            <div class="text-lg font-semibold text-stone-700 dark:text-stone-100">
+                {% if chartData is not empty and chartData['monthlyPayment'] is defined %}
+                    {{ chartData['monthlyPayment']|currency }}
+                {% endif %}
+            </div>
+            <div class="text-lg text-stone-700 dark:text-stone-100">
+                Dont assurance 
+                {% if chartData is not empty and chartData['monthlyInsurance'] is defined %}
+                    {{ chartData['monthlyInsurance']|currency }}
+                {% endif %}
+                /mois
+            </div>
+        </div>
+
+        <div class="flex justify-between w-full max-w-md mx-auto mt-2">
+            <div class="flex flex-col items-start text-sm text-stone-700 dark:text-stone-100">
+                <span>Coût total du crédit</span>
+                <span>Dont assurance</span>
+            </div>
+            <div class="flex flex-col items-end text-sm font-medium text-stone-700 dark:text-stone-100">
+                <span>
+                    {% if chartData is not empty and chartData['totalCreditCost'] is defined %}
+                        {{ chartData['totalCreditCost']|currency }}
+                    {% endif %}
+                </span>
+                <span>
+                    {% if chartData is not empty and chartData['totalInsurance'] is defined %}
+                        {{ chartData['totalInsurance']|currency }}
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div id="data-series-chart" data-chart-mortgate-loan-target="chart" data-chart-value="{{ chartData|json_encode }}"></div>
+    </div>
+</div>
