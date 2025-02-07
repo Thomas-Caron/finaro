@@ -1,0 +1,66 @@
+<div class="bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 max-w-lg rounded-xl mx-auto p-5" {{ attributes }}>
+    <h1 class="text-2xl text-stone-950 dark:text-stone-50">Inscription</h1>
+    <div class="flex my-3">
+        <span class="text-stone-300 dark:text-stone-700 me-1">Vous avez déjà un compte ?</span>
+        <twig:Button:Link
+            class="text-stone-950 dark:text-stone-50 hover:underline"
+            url="{{ path('finaro_login') }}"
+            text="Se connecter"
+        />
+    </div>
+
+    {{ form_start(form, { 'attr': {
+        'data-turbo': 'false',
+        'data-action': 'live#action:prevent',
+        'data-live-action-param': 'saveRegistration'
+    }}) }}
+        <twig:Form:Input:Input
+            label="{{ form.lastname.vars.label }}"
+            id="{{ form.lastname.vars.id }}"
+            containerClass="mb-3"
+            name="{{ form.lastname.vars.full_name }}"
+            value="{{ form.lastname.vars.data }}"
+            error="{{ form_errors(form.lastname) }}"
+        />
+
+        <twig:Form:Input:Input
+            label="{{ form.firstname.vars.label }}"
+            id="{{ form.firstname.vars.id }}"
+            containerClass="mb-3"
+            name="{{ form.firstname.vars.full_name }}"
+            value="{{ form.firstname.vars.data }}"
+            error="{{ form_errors(form.firstname) }}"
+        />
+
+        <twig:Form:Input:Input
+            label="{{ form.email.vars.label }}"
+            type="email"
+            id="{{ form.email.vars.id }}"
+            containerClass="mb-3"
+            name="{{ form.email.vars.full_name }}"
+            value="{{ form.email.vars.data }}"
+            error="{{ form_errors(form.email) }}"
+        />
+
+        {% for index, password in form.password.vars.form.children %}
+            <twig:Form:Input:Input
+                label="{{ password.vars.label }}"
+                type="password"
+                id="{{ password.vars.id }}"
+                containerClass="mb-3"
+                name="{{ password.vars.full_name }}"
+                value="{{ password.vars.data }}"
+                error="{{ 'first' == index ? form_errors(password) : null }}"
+            />
+        {% endfor %}
+
+        {{ form_row(form._token) }}
+
+        <twig:Button:Button
+            class="w-full mt-5"
+            color="gradient"
+            type="submit"
+            text="S'inscrire"
+        />
+    {{ form_end(form, { render_rest: false }) }}
+</div>
