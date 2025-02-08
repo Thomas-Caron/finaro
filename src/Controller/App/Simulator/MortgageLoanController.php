@@ -9,8 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/simulation/credit-immobilier', name: 'finaro_app_simulator_mortgage_loan')]
+#[
+    Route('/simulation/credit-immobilier', name: 'finaro_app_simulator_mortgage_loan'),
+    IsGranted('IS_AUTHENTICATED_FULLY')
+]
 class MortgageLoanController extends AbstractController
 {
     public function __invoke(Request $request): Response

@@ -23,18 +23,18 @@
         {% endif %}
         <header>
             {% if not is_granted('IS_AUTHENTICATED_FULLY') or 'finaro_homepage' == app.request.attributes.get('_route') %}
-               <twig:Layout:Header:Nav:Navbar 
+                <twig:Layout:Header:Nav:Navbar 
                     isConnected="{{ is_granted('IS_AUTHENTICATED_FULLY') }}"
                     firstname="{{ app.user ? app.user.firstname : ''}}"
                     lastname="{{ app.user ? app.user.lastname : '' }}"
                     email="{{ app.user ? app.user.email : '' }}"
-               />
+                />
             {% else %}
-               <twig:Layout:Header:Nav:NavbarApp
+                <twig:Layout:Header:Nav:NavbarApp
                     firstname="{{ app.user.firstname }}"
                     lastname="{{ app.user.lastname }}"
                     email="{{ app.user.email }}"
-                >
+                />
             {% endif %}
             {% block header %}{% endblock %}
         </header>
