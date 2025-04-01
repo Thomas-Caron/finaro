@@ -4,14 +4,26 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
         {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
+
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+
+            <div class="flex items-center justify-center min-h-screen bg-dark bg-linear-to-b from-dark-lightest from-0% via-violet-lightest via-10% to-dark-lightest to-100%">
+                <div class="text-center p-8 bg-dark/30 border-2 border-dark/30 shadow-xl rounded-2xl">
+                    <h1 class="text-4xl font-bold text-white mb-4">🚧 Site en Construction 🚧</h1>
+                    <p class="text-lg text-white/70 mb-6">Nous travaillons actuellement sur quelque chose d'incroyable. Revenez bientôt !</p>
+                </div>
+            </div>
+        
+        {% endblock %}
     </body>
 </html>
