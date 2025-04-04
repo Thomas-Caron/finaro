@@ -6,6 +6,13 @@ Copyright © 2025 37signals LLC
 /*! #__NO_SIDE_EFFECTS__ */
 
 /**
+ * @license lucide-vue-next v0.487.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+/**
 * @vue/runtime-core v3.5.13
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
