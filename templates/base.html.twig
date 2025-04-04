@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -14,16 +14,63 @@
         {% endblock %}
 
     </head>
-    <body>
-        {% block body %}
+    <body class="bg-dark bg-linear-to-b from-dark-lightest from-0% via-violet-lightest via-10% to-dark-lightest to-100%">
+        <header>
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') or 'app_homepage' == app.request.attributes.get('_route') %}
+                <div {{ vue_component('layout/Header', {
+                    'is-connected': is_granted('IS_AUTHENTICATED_FULLY'),
+                    'user': {
+                        'firstname': app.user ? app.user.firstname : '',
+                        'lastname':app.user ? app.user.lastname : '',
+                        'email': app.user ? app.user.email : ''
+                    },
+                    'url': {
+                        'login': path('app_homepage'),
+                        'logout': path('app_homepage'),
+                        'register': path('app_homepage'),
+                        'home': path('app_homepage'),
+                        'dashboard': path('app_homepage'),
+                        'informations': path('app_homepage')
+                    }
+                }) }}></div>
+            {% endif %}
+            {% block header %}{% endblock %}
+        </header>
 
-            <div class="flex items-center justify-center min-h-screen bg-dark bg-linear-to-b from-dark-lightest from-0% via-violet-lightest via-10% to-dark-lightest to-100%">
-                <div class="text-center p-8 bg-dark/30 border-2 border-dark/30 shadow-xl rounded-2xl">
-                    <h1 class="text-4xl font-bold text-white mb-4">🚧 Site en Construction 🚧</h1>
-                    <p class="text-lg text-white/70 mb-6">Nous travaillons actuellement sur quelque chose d'incroyable. Revenez bientôt !</p>
+        <main>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and 'app_homepage' != app.request.attributes.get('_route') %}
+                <div {{ vue_component('layout/Sidebar', {
+                    'user': {
+                        'firstname': app.user ? app.user.firstname : '',
+                        'lastname':app.user ? app.user.lastname : '',
+                        'email': app.user ? app.user.email : ''
+                    }
+                }) }}></div>
+            {% endif %}
+
+            {% block body %}
+
+                <div class="flex items-center justify-center min-h-screen">
+                    <div class="text-center p-8 bg-dark/30 border-2 border-dark/30 shadow-xl rounded-2xl">
+                        <h1 class="text-4xl font-bold text-white mb-4"><span class="me-3">🚧</span>Site en Construction<span class="ms-3">🚧</span></h1>
+                        <p class="text-lg text-white/70 mb-6">Nous travaillons actuellement sur quelque chose d'incroyable. Revenez bientôt !</p>
+                    </div>
                 </div>
-            </div>
-        
-        {% endblock %}
+
+            {% endblock %}
+        </main>
+
+        <footer>
+            <div {{ vue_component('layout/Footer', {
+                'is-app': is_granted('IS_AUTHENTICATED_FULLY') and 'app_homepage' != app.request.attributes.get('_route'),
+                'url': {
+                    'home': path('app_homepage'),
+                    'contact': path('app_homepage'),
+                    'terms': path('app_homepage'),
+                    'privacy': path('app_homepage')
+                }
+            }) }}></div>
+            {% block footer %}{% endblock %}
+        </footer>
     </body>
 </html>
