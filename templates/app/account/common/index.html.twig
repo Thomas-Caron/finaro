@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compte commun{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/app/account/CommonPage', {
+        'url': {
+            'common': path('app_account_common')
+        }
+    }) }}></div>
+{% endblock %}

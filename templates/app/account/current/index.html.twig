@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compte courant{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/app/account/CurrentPage', {
+        'url': {
+            'current': path('app_account_current')
+        }
+    }) }}></div>
+{% endblock %}

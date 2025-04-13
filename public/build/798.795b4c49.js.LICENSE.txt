@@ -1,4 +1,10 @@
 /*!
+ * pinia v3.0.2
+ * (c) 2025 Eduardo San Martin Morote
+ * @license MIT
+ */
+
+/*!
 Turbo 8.0.13
 Copyright © 2025 37signals LLC
  */

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/HomePage', {
+        'api-token': app.session.get('token') ?? null,
+        'url': path('app_homepage'),
+    }) }}></div>
+{% endblock %}

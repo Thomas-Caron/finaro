@@ -1,6 +1,6 @@
 <template>
     <div class="bg-stone-50 dark:bg-stone-900 border-t border-stone-200 dark:border-stone-700">
-        <div class="container mx-auto p-4 md:py-8">
+        <div class="container mx-auto p-4 lg:py-8">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <a :href="url.home" class="flex items-center mb-4 sm:mb-0">
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-stone-50">Finaro</span>

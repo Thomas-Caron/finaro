@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/RegisterPage', {
+        'url': {
+            'login': path('app_login'),
+        },
+        'api': {
+                'register': path('api_register'),
+        }
+    }) }}></div>
+{% endblock %}

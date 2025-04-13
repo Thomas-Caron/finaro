@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simulateur de crédit immobilier{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/app/simulator/MortgageLoanPage', {
+        'url': {
+            'mortgageLoan': path('app_simulator_mortgage_loan')
+        }
+    }) }}></div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/app/DashboardPage', {
+        'url': {
+            'dashboard': path('app_dashboard')
+        }
+    }) }}></div>
+{% endblock %}
