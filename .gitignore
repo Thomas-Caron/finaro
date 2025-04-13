@@ -28,3 +28,8 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 .DS_Store
+settings.json
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

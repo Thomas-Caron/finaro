@@ -69,7 +69,6 @@ const props = defineProps({
                 }
             ],
             icon: '',
-
         })
     },
     isCollapsed: {

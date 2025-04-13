@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/LoginPage', {
+        'last-username': last_username,
+        'token-csrf': csrf_token('authenticate'),
+        'error': error ? error.messageKey|trans(error.messageData, 'security') : null,
+        'url': {
+            'home': path('app_homepage'),
+            'login': path('app_login'),
+            'register': path('app_register'),
+            'forgetPassword': path('app_homepage'),
+        },
+    }) }}></div>
+{% endblock %}

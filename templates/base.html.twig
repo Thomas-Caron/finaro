@@ -25,11 +25,11 @@
                         'email': app.user ? app.user.email : ''
                     },
                     'url': {
-                        'login': path('app_homepage'),
-                        'logout': path('app_homepage'),
-                        'register': path('app_homepage'),
+                        'login': path('app_login'),
+                        'logout': path('app_logout'),
+                        'register': path('app_register'),
                         'home': path('app_homepage'),
-                        'dashboard': path('app_homepage'),
+                        'dashboard': path('app_dashboard'),
                         'informations': path('app_homepage')
                     }
                 }) }}></div>
@@ -37,27 +37,70 @@
             {% block header %}{% endblock %}
         </header>
 
-        <main>
+        <main> 
             {% if is_granted('IS_AUTHENTICATED_FULLY') and 'app_homepage' != app.request.attributes.get('_route') %}
                 <div {{ vue_component('layout/Sidebar', {
                     'user': {
                         'firstname': app.user ? app.user.firstname : '',
                         'lastname':app.user ? app.user.lastname : '',
                         'email': app.user ? app.user.email : ''
+                    },
+                    'url': {
+                        'logout': path('app_logout'),
+                        'dashboard': path('app_dashboard')
+                    },
+                    'nav': {
+                        'dashboard': {
+                            'name': {
+                                'slug': 'dashboard',
+                                'text': 'Dashboard',
+                                'url': path('app_dashboard')
+                            },
+                            'icon': 'LayoutDashboard',
+                        },
+                        'account': {
+                            'name': {
+                                'slug': 'account',
+                                'text': 'Comptes',
+                            },
+                            'subName': [
+                                {
+                                    'slug': 'current',
+                                    'text': 'Compte courant',
+                                    'url': path('app_account_current')
+                                },
+                                {
+                                    'slug': 'common',
+                                    'text': 'Compte commun',
+                                    'url': path('app_account_common')
+                                }
+                            ],
+                            'icon': 'Coins'
+                        },
+                        'simulator': {
+                            'name': {
+                                'slug': 'simulator',
+                                'text': 'Simulateurs',
+                            },
+                            'subName': [
+                                {
+                                    'slug': 'mortgageLoan',
+                                    'text': 'Crédit immobilier',
+                                    'url': path('app_simulator_mortgage_loan')
+                                },
+                                {
+                                    'slug': 'compoundInterest',
+                                    'text': 'Intérêts composés',
+                                    'url': path('app_simulator_compound_interest')
+                                }
+                            ],
+                            'icon': 'Calculator'
+                        }
                     }
                 }) }}></div>
             {% endif %}
 
-            {% block body %}
-
-                <div class="flex items-center justify-center min-h-screen">
-                    <div class="text-center p-8 bg-dark/30 border-2 border-dark/30 shadow-xl rounded-2xl">
-                        <h1 class="text-4xl font-bold text-white mb-4"><span class="me-3">🚧</span>Site en Construction<span class="ms-3">🚧</span></h1>
-                        <p class="text-lg text-white/70 mb-6">Nous travaillons actuellement sur quelque chose d'incroyable. Revenez bientôt !</p>
-                    </div>
-                </div>
-
-            {% endblock %}
+            {% block body %}{% endblock %}
         </main>
 
         <footer>

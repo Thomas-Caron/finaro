@@ -42,6 +42,7 @@
                 <a 
                     :href="url.logout"
                     class="flex items-center p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 cursor-pointer"
+                    @click.prevent="handleLogout"
                 >
                     <span class="w-8 h-8 flex justify-center items-center">
                         <Icon class="size-5" name="LogOut" />
@@ -73,4 +74,9 @@ const props = defineProps({
         }
     },
 });
+
+const handleLogout = () => {
+    localStorage.removeItem('apiToken');
+    window.location.href = props.url.logout;
+};
 </script>
