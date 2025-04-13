@@ -41,5 +41,4 @@ onMounted(() => {
 onUnmounted(() => {
     breadcrumb.clear()
 });
-
 </script>

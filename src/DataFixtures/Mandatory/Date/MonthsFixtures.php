@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\DataFixtures\Mandatory\Date;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Date\Month;
 
-class MonthsFixtures extends Fixture
+class MonthsFixtures extends Fixture implements FixtureGroupInterface
 {
     public static function getGroups(): array
     {
