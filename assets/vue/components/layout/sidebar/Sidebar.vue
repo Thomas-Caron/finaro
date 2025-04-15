@@ -3,8 +3,8 @@
         id="sidebar"
         :class="[
             {
-                'w-64': !sidebar.isCollapsed,
-                'w-20': sidebar.isCollapsed
+                'w-20': sidebar.isCollapsed,
+                'w-64': !sidebar.isCollapsed
             },
             'fixed top-0 left-0 z-40 h-svh transition-[width] duration-300 bg-stone-50 border-r border-stone-200 dark:bg-stone-900 dark:border-stone-700'
         ]"
@@ -30,8 +30,8 @@
                 href="/" 
                 :class="[
                     {
-                        'ps-8': !sidebar.isCollapsed,
-                        'justify-center': sidebar.isCollapsed
+                        'justify-center': sidebar.isCollapsed,
+                        'ps-8': !sidebar.isCollapsed
                     },
                     'flex py-6'
                 ]"
@@ -75,7 +75,7 @@
 
 <script setup>
 import Breadcrumb from '../breadcrumb/Breadcrumb.vue';
-import Icon from '../../Icon.vue';
+import Icon from '../../icon/Icon.vue';
 import SidebarNav from './SidebarNav.vue';
 import SidebarUser from './SidebarUser.vue';
 
@@ -134,7 +134,7 @@ const props = defineProps({
                 },
                 subName: [
                     {
-                        slug: 'mortgageLoan',
+                        slug: 'mortgateLoan',
                         text: 'Crédit immobilier',
                         url: '/'
                     },

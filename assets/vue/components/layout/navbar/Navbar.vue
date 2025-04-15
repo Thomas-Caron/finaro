@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import Icon from '../../Icon.vue';
+import Icon from '../../icon/Icon.vue';
 import ButtonLink from '../../button/ButtonLink.vue';
 import ButtonNavbarMenu from '../../button/ButtonNavbarMenu.vue';
 import NavbarUser from './NavbarUser.vue';

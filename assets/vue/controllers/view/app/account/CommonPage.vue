@@ -2,8 +2,8 @@
     <div
         :class="[
             {
-                'ml-64': !sidebar.isCollapsed,
-                'ml-20': sidebar.isCollapsed
+                'ml-20': sidebar.isCollapsed,
+                'ml-64': !sidebar.isCollapsed
             },
             'px-6 h-[500px] flex items-center'
         ]"

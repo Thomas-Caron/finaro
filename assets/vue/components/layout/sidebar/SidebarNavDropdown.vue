@@ -20,10 +20,10 @@
                 <Icon v-else class="size-5" name="ChevronRight" />
             </span>
         </button>
-        <div v-show="isCollapsed" :id="`tooltip-${data.name.slug}`" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+        <Tooltip v-show="isCollapsed" :id="`tooltip-${data.name.slug}`">
             {{ data.name.text }}
-        </div>
-        <div v-show="isCollapsed" :id="`dropdown-${data.name.slug}`" class="absolute hidden w-max bg-white border border-gray-100 rounded-lg shadow-md dark:border-gray-700 dark:bg-gray-700">
+        </Tooltip>
+        <div v-show="isCollapsed" :id="`dropdown-${data.name.slug}`" class="absolute hidden w-max bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800">
             <ul class="flex flex-col space-y-4 p-4">
                 <li v-for="subName in data.subName" :key="subName.slug">
                     <a :href="subName.url" class="inline-block w-full p-2 text-stone-700 transition duration-75 rounded-lg hover:bg-stone-200/30 dark:text-stone-400 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300">
@@ -46,7 +46,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import Icon from '../../Icon.vue';
+import Icon from '../../icon/Icon.vue';
+import Tooltip from '../../tootlip/Tooltip.vue'
 
 const props = defineProps({
     data: {
