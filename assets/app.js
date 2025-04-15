@@ -1,7 +1,8 @@
-import { registerVueControllerComponents } from '@symfony/ux-vue';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { registerVueControllerComponents } from '@symfony/ux-vue';
 import './bootstrap.js';
+import 'flowbite/dist/flowbite.turbo.js';
 
 /*
  * Welcome to your app's main JavaScript file!
@@ -13,10 +14,9 @@ import './bootstrap.js';
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
-import 'flowbite/dist/flowbite.turbo.js';
-
 const app = createApp({});
 const pinia = createPinia();
+
 app.use(pinia);
 
 registerVueControllerComponents(require.context('./vue/controllers', true, /\.vue$/));

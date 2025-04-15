@@ -24,7 +24,7 @@
                 </ul>
             </div>
             <hr class="my-4 border-stone-200 sm:mx-auto dark:border-stone-700 lg:my-8" />
-            <span class="block text-sm text-stone-900 sm:text-center dark:text-stone-50">© 2025 - Finaro. Made by <a class="hover:underline" href="https://thomascaron.com" target="_blank">Thomas CARON</a></span>
+            <span class="block text-sm text-stone-900 text-center dark:text-stone-50">© 2025 - Finaro. Made by <a class="hover:underline" href="https://thomascaron.com" target="_blank">Thomas CARON</a></span>
         </div>
     </div>
 </template>

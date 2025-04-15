@@ -6,6 +6,9 @@
     <div {{ vue_component('view/app/simulator/CompoundInterestPage', {
         'url': {
             'compoundInterest': path('app_simulator_compound_interest')
+        },
+        'api': {
+            'calculateCompoundInterest': path('api_simulator_compound_interest')
         }
     }) }}></div>
 {% endblock %}

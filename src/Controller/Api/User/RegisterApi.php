@@ -6,15 +6,12 @@ namespace App\Controller\Api\User;
 
 use App\Entity\User\User;
 use App\Form\User\RegisterFormType;
-use App\Security\SecurityAuthenticator;
 use App\Services\Manager\User\UserManager;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 #[Route(path: '/api')]
 class RegisterApi extends AbstractController
@@ -25,7 +22,7 @@ class RegisterApi extends AbstractController
     }
 
     #[Route(path: '/register', methods: ['POST'], name: 'api_register')]
-    public function register(Request $request): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $user = new User();
         $form = $this->createForm(RegisterFormType::class, $user);

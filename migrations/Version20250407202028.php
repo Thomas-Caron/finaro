@@ -14,7 +14,7 @@ final class Version20250407202028 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Fill database with all entites';
     }
 
     public function up(Schema $schema): void

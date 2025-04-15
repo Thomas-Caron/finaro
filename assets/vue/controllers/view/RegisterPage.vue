@@ -84,7 +84,9 @@ import { ref } from 'vue';
 import Button from '../../components/button/Button.vue';
 import Input from '../../components/input/Input.vue';
 
-import api from '../../../js/api.js';
+import useApi from '../../composables/useApi.js';
+
+const { post } = useApi();
 
 const props = defineProps({
     url: {
@@ -135,7 +137,7 @@ const errors = ref({
 const handleSubmit = async () => {
     try {
         loading.value = true;
-        const response = await api.post(props.api.register, formData.value);
+        const response = await post(props.api.register, formData.value);
 
         if (response.success) {
             window.location.href = props.url.login;

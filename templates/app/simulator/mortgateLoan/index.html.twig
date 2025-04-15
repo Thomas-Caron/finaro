@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simulateur de crédit immobilier{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/app/simulator/MortgateLoanPage', {
+        'url': {
+            'mortgateLoan': path('app_simulator_mortgate_loan')
+        },
+        'api': {
+            'calculateMortgateLoan': path('api_simulator_mortgate_loan')
+        }
+    }) }}></div>
+{% endblock %}

@@ -1,0 +1,24 @@
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: rgb(245 245 244);
+    border: 1px solid rgb(231 229 228);
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background-color: rgb(245 245 244);
+    border: 1px solid rgb(231 229 228);
+    border-radius: 100%;
+    cursor: pointer;
+}

@@ -12,14 +12,15 @@
             </span>
             <span v-if="!isCollapsed" class="flex-1 ms-3 whitespace-nowrap">{{ data.name.text }}</span>
         </a>
-        <div v-show="isCollapsed" :id="`tooltip-${data.name.slug}`" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+        <Tooltip v-show="isCollapsed" :id="`tooltip-${data.name.slug}`">
             {{ data.name.text }}
-        </div>
+        </Tooltip>
     </li>
 </template>
 
 <script setup>
-import Icon from '../../Icon.vue';
+import Icon from '../../icon/Icon.vue';
+import Tooltip from '../../tootlip/Tooltip.vue';
 
 const props = defineProps({
     data: {
