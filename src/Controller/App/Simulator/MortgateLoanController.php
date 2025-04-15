@@ -10,11 +10,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-class MortgageLoanController extends AbstractController
+class MortgateLoanController extends AbstractController
 {
-    #[Route('/simulation/credit-immobilier', name: 'app_simulator_mortgage_loan')]
+    #[Route('/simulation/credit-immobilier', name: 'app_simulator_mortgate_loan')]
     public function __invoke(): Response
     {
-        return $this->render('app/simulator/mortgageLoan/index.html.twig');
+        return $this->render('app/simulator/mortgateLoan/index.html.twig');
     }
 }
