@@ -23,14 +23,15 @@
                     'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 dark:bg-stone-700 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isError,
                     'bg-stone-50 border border-stone-300 text-stone-900 focus:ring-stone-400 focus:border-stone-400 dark:bg-stone-700 dark:border-stone-500 dark:placeholder-stone-400 dark:text-stone-50 dark:focus:ring-stone-400 dark:focus:border-stone-400': !isError
                 },
-                'block w-full p-2.5 text-sm rounded-lg'
+                'block w-full p-2.5 text-sm rounded-lg focus:outline-none'
             ]"
             :name="name"
             :value="modelValue"
             @input="$emit('update:modelValue', $event.target.value)"
+            @change="$emit('change', $event.target.value)"
             :required="required"
             :autofocus="autofocus"
-        >
+        />
     </div>
 
     <Alert
