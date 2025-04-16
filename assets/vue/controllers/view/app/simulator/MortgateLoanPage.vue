@@ -1,11 +1,8 @@
 <template>
-    <div
-        :class="[
-            {
-                'ml-20': sidebar.isCollapsed,
-                'ml-64': !sidebar.isCollapsed
-            },
-            'px-6 mb-6'
+    <ContainerApp 
+        :breadcrumbs="[
+            { text: 'Simulateurs' },
+            { text: 'Crédit immobilier', url: props.url.mortgateLoan }
         ]"
     >
         <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-4">
@@ -94,17 +91,16 @@
                 <MortgateLoanChart v-if="data.chartData.length" :chartData="data.chartData" />
             </div>
         </div>
-    </div>
+    </ContainerApp>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
+import ContainerApp from '../../../../components/layout/container/ContainerApp.vue';
 import Loader from '../../../../components/loader/Loader.vue';
 import MortgateLoanChart from '../../../../components/chart/MortgateLoanChart.vue';
 import Slider from '../../../../components/input/Slider.vue';
 
-import { useBreadcrumbStore } from '../../../../stores/useBreadcrumbStore';
-import { useSidebarStore } from '../../../../stores/useSidebarStore';
 import useApi from '../../../../composables/useApi';
 import useConvertFilter from '../../../../composables/useConvertFilter';
 
@@ -121,9 +117,6 @@ const props = defineProps({
         default: () => ({})
     }
 });
-
-const breadcrumb = useBreadcrumbStore();
-const sidebar = useSidebarStore();
 
 const formData = ref({
     amountBorrowed: 50000,
@@ -156,16 +149,4 @@ const handleSubmit = async () => {
         console.error(errorCatch);
     }
 };
-
-onMounted(() => {
-    handleSubmit();
-    breadcrumb.set([
-        { text: 'Simulateurs' },
-        { text: 'Crédit immobilier', url: props.url.mortgateLoan },
-    ]);
-});
-
-onUnmounted(() => {
-    breadcrumb.clear()
-});
 </script>

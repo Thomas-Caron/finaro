@@ -25,14 +25,7 @@ import Tooltip from '../../tootlip/Tooltip.vue';
 const props = defineProps({
     data: {
         type: Object,
-        default: () => ({
-            name: {
-                slug: '',
-                text: '',
-                url: ''
-            },
-            icon: ''
-        })
+        default: () => ({})
     },
     isCollapsed: {
         type: Boolean,
