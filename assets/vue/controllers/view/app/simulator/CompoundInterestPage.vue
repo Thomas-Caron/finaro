@@ -2,7 +2,7 @@
     <ContainerApp 
         :breadcrumbs="[
             { text: 'Simulateurs' },
-            { text: 'Crédit immobilier', url: props.url.mortgateLoan },
+            { text: 'Intérêts composés', url: props.url.compoundInterest },
         ]"
     >
         <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-4">
