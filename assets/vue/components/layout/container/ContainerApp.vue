@@ -11,7 +11,7 @@
     >
         <div
             v-if="sidebar.isSmallScreen && sidebar.isMobileOpen"
-            class="fixed inset-0 bg-black bg-opacity-50 z-30 sm:hidden"
+            class="fixed inset-0 bg-black/80 z-30 sm:hidden"
             @click="sidebar.toggle"
         ></div>
 
