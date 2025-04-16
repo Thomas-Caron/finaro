@@ -58,22 +58,18 @@ const props = defineProps({
     },
     user: {
         type: Object,
-        default: {
-            firstname: 'test',
-            lastname: 'test',
-            email: 'test@test.com'
-        }
+        default: () => ({})
     },
     url: {
         type: Object,
-        default: {
+        default: () => ({
             login: '/',
             logout: '/',
             register: '/',
             home: '/',
             dashboard: '/',
             informations: '/'
-        }
+        })
     }
-})
+});
 </script>

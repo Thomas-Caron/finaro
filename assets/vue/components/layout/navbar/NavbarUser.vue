@@ -57,18 +57,11 @@ import Icon from '../../icon/Icon.vue';
 const props = defineProps({
     user: {
         type: Object,
-        default: {
-            firstname: 'test',
-            lastname: 'test',
-            email: 'test@test.com'
-        }
+        default: () => ({})
     },
     url: {
         type: Object,
-        default: {
-            dashboard: '/',
-            logout: '/'
-        }
+        default: () => ({})
     },
 });
 

@@ -2,8 +2,9 @@
     <div 
         :class="[
             {
-                'ml-20': sidebar.isCollapsed,
-                'ml-64': !sidebar.isCollapsed
+                'ml-20': !sidebar.isSmallScreen && sidebar.isCollapsed,
+                'ml-64': !sidebar.isSmallScreen && !sidebar.isCollapsed,
+                'ml-0': sidebar.isSmallScreen
             },
             'relative py-3 z-0 bg-stone-50 dark:bg-stone-900 border-t border-stone-200 dark:border-stone-700'
         ]"
