@@ -15,7 +15,7 @@
 html, body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%;
     max-width: 100%;
     position: relative;
     overflow-x: hidden;
@@ -25,4 +25,8 @@ html, body {
 
 main {
     flex-grow: 1;
+}
+
+.no-scroll {
+    overflow-y: hidden;
 }
