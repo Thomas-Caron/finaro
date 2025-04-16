@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ContainerApp from '../../../../components/layout/container/ContainerApp.vue';
 import Loader from '../../../../components/loader/Loader.vue';
 import MortgateLoanChart from '../../../../components/chart/MortgateLoanChart.vue';
@@ -149,4 +149,8 @@ const handleSubmit = async () => {
         console.error(errorCatch);
     }
 };
+
+onMounted(() => {
+    handleSubmit();
+});
 </script>

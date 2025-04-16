@@ -2,7 +2,7 @@
     <ContainerApp 
         :breadcrumbs="[
             { text: 'Simulateurs' },
-            { text: 'Intérêts composés', url: props.url.compoundInterest }
+            { text: 'Intérêts composés', url: props.url.compoundInterest },
         ]"
     >
         <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-4">
@@ -106,7 +106,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ContainerApp from '../../../../components/layout/container/ContainerApp.vue';
 import CompoundInterestChart from '../../../../components/chart/CompoundInterestChart.vue';
 import Loader from '../../../../components/loader/Loader.vue';
@@ -159,4 +159,8 @@ const handleSubmit = async () => {
         console.error(errorCatch);
     }
 };
+
+onMounted(() => {
+    handleSubmit();
+});
 </script>
