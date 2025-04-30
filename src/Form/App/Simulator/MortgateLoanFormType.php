@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\App\Simulator;
 
-use App\Entity\Simulator\MortgateLoanData;
+use App\DataEntity\App\Simulator\MortgateLoanData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{NumberType};
 use Symfony\Component\Form\FormBuilderInterface;

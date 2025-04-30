@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Calculator\Simulator;
 
-use App\Entity\Simulator\MortgateLoanData;
+use App\DataEntity\App\Simulator\MortgateLoanData;
 
 class MortgateLoanCalculator
 {
