@@ -6,6 +6,18 @@
     <div {{ vue_component('view/app/DashboardPage', {
         'url': {
             'dashboard': path('app_dashboard')
+        },
+        'api': {
+            'getFixedExpenses': path('api_account_current_movement_get_fixed_expenses', {
+                'month': 'month',
+                'year': 'year'
+            }),
+            'getDataCalculated': path('api_account_current_calculate', {
+                'month': 'month',
+                'year': 'year'
+            }),
+            'getMonths': path('api_get_months'),
+            'getYears': path('api_get_years')
         }
     }) }}></div>
 {% endblock %}
