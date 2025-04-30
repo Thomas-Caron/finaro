@@ -36,7 +36,7 @@ class AccountMovement
     private ?Account $account = null;
 
     #[ORM\ManyToOne(inversedBy: 'accountMovements')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Label $label = null;
 
     #[ORM\ManyToOne(inversedBy: 'accountMovements')]
@@ -50,6 +50,9 @@ class AccountMovement
     #[ORM\ManyToOne(inversedBy: 'accountMovements')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Month $month = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $prelevedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
@@ -160,6 +163,18 @@ class AccountMovement
         return $this;
     }
 
+    public function getPrelevedAt(): ?\DateTimeInterface
+    {
+        return $this->prelevedAt;
+    }
+
+    public function setPrelevedAt(?\DateTimeInterface $prelevedAt): static
+    {
+        $this->prelevedAt = $prelevedAt;
+
+        return $this;
+    }
+    
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
