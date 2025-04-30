@@ -6,9 +6,9 @@ namespace App\Controller\Api\User;
 
 use App\Entity\User\User;
 use App\Form\User\RegisterFormType;
+use App\Services\Helper\FormHelper;
 use App\Services\Manager\User\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,11 +17,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegisterApi extends AbstractController
 {
     public function __construct(
-        private readonly UserManager $userManager
+        private readonly UserManager $userManager,
+        private readonly FormHelper $formHelper
     ) {
     }
 
-    #[Route(path: '/register', methods: ['POST'], name: 'api_register')]
+    #[Route(path: '/user/register', methods: ['POST'], name: 'api_user_register')]
     public function index(Request $request): JsonResponse
     {
         $user = new User();
@@ -31,31 +32,14 @@ class RegisterApi extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->createUser($user);
 
-            return new JsonResponse([
+            return $this->json([
                 'success' => true,
             ], 201);
         }
 
-        return new JsonResponse([
+        return $this->json([
             'success' => false,
-            'errors' => $this->getFormErrors($form),
+            'errors' => $this->formHelper->getErrors($form),
         ], 400);
-    }
-
-    private function getFormErrors(FormInterface $form): array
-    {
-        $errors = [];
-
-        foreach ($form->all() as $child) {
-            if (!$child->isValid()) {
-                $errors[$child->getName()] = [];
-
-                foreach ($child->getErrors(true) as $error) {
-                    $errors[$child->getName()][] = $error->getMessage();
-                }
-            }
-        }
-
-        return $errors;
     }
 }

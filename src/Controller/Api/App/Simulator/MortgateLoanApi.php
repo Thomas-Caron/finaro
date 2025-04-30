@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\App\Simulator;
 
-use App\Entity\Simulator\MortgateLoanData;
+use App\DataEntity\App\Simulator\MortgateLoanData;
 use App\Form\App\Simulator\MortgateLoanFormType;
 use App\Services\Calculator\Simulator\MortgateLoanCalculator;
+use App\Services\Helper\FormHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,11 +17,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class MortgateLoanApi extends AbstractController
 {
     public function __construct(
-        private readonly MortgateLoanCalculator $mortgateLoanCalculator
+        private readonly MortgateLoanCalculator $mortgateLoanCalculator,
+        private readonly FormHelper $formHelper
     ) {
     }
 
-    #[Route(path: '/simulator/calculateMortgateLoan', methods: ['POST'], name: 'api_simulator_mortgate_loan')]
+    #[Route(path: '/simulator/mortgate-loan/calculate', methods: ['POST'], name: 'api_simulator_mortgate_loan_calculate')]
     public function index(Request $request): JsonResponse
     {
         $mortgateLoan = new MortgateLoanData();
@@ -31,32 +32,15 @@ class MortgateLoanApi extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $this->mortgateLoanCalculator->calculate($mortgateLoan);
 
-            return new JsonResponse([
+            return $this->json([
                 'success' => true,
                 'data' => $data
             ], 201);
         }
 
-        return new JsonResponse([
+        return $this->json([
             'success' => false,
-            'errors' => $this->getFormErrors($form),
+            'errors' => $this->formHelper->getErrors($form),
         ], 400);
-    }
-
-    private function getFormErrors(FormInterface $form): array
-    {
-        $errors = [];
-
-        foreach ($form->all() as $child) {
-            if (!$child->isValid()) {
-                $errors[$child->getName()] = [];
-
-                foreach ($child->getErrors(true) as $error) {
-                    $errors[$child->getName()][] = $error->getMessage();
-                }
-            }
-        }
-
-        return $errors;
     }
 }
