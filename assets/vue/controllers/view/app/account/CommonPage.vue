@@ -17,9 +17,6 @@
 import ContainerApp from '../../../../components/layout/container/ContainerApp.vue';
 
 const props = defineProps({
-    url: {
-        type: Object,
-        default: () => ({})
-    }
+    url: { type: Object, default: () => ({}) }
 });
 </script>
