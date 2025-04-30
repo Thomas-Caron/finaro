@@ -19,10 +19,7 @@ import Tooltip from '../tootlip/Tooltip.vue';
 import useTheme from '../../composables/useTheme';
 
 const props = defineProps({
-    tooltipClass: {
-        type: String,
-        required: false
-    }
+    tooltipClass: { type: String, required: false }
 });
 
 const { toggleTheme, initTheme, isDark } = useTheme();

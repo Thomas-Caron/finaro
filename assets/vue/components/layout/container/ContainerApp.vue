@@ -43,9 +43,6 @@ import { useSidebarStore } from '../../../stores/useSidebarStore';
 const sidebar = useSidebarStore();
 
 const props = defineProps({
-    breadcrumbs: {
-        type: Array,
-        required: true
-    }
+    breadcrumbs: { type: Array, required: true }
 });
 </script>

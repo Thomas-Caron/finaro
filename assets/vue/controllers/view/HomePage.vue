@@ -11,14 +11,8 @@
 import { onMounted } from 'vue';
 
 const props = defineProps({
-    apiToken: {
-        type: String,
-        default: null
-    },
-    url: {
-        type: String,
-        default: '/'
-    }
+    apiToken: { type: String, default: null },
+    url: { type: String, default: '/' }
 });
 
 onMounted(() => {

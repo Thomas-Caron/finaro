@@ -52,24 +52,8 @@ import ButtonNavbarMenu from '../../button/ButtonNavbarMenu.vue';
 import NavbarUser from './NavbarUser.vue';
 
 const props = defineProps({
-    isConnected: {
-        type: Boolean,
-        default: false
-    },
-    user: {
-        type: Object,
-        default: () => ({})
-    },
-    url: {
-        type: Object,
-        default: () => ({
-            login: '/',
-            logout: '/',
-            register: '/',
-            home: '/',
-            dashboard: '/',
-            informations: '/'
-        })
-    }
+    isConnected: { type: Boolean, default: false },
+    user: { type: Object, default: () => ({}) },
+    url: { type: Object, default: () => ({}) }
 });
 </script>

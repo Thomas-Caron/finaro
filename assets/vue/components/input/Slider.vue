@@ -62,50 +62,17 @@ const { getCurrency, getPercentage, getYear, getMonth, formatNumber } = useConve
 const { isDark } = useTheme();
 
 const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    label: {
-        type: String,
-        required: false
-    },
-    min: {
-        type: Number,
-        default: 0
-    },
-    max: {
-        type: Number,
-        default: 9999
-    },
-    step: {
-        type: Number,
-        default: 1
-    },
-    unit: {
-        type: String,
-        default: null
-    },
-    modelValue: {
-        type: [Number, String],
-        default: 0
-    },
-    required: {
-        type: Boolean,
-        default: false
-    },
-    isError: {
-        type: Boolean,
-        default: false
-    },
-    errorMessage: {
-        type: String,
-        default: ''
-    }
+    id: { type: String, required: true },
+    name: { type: String, required: true },
+    label: { type: String, required: false },
+    min: { type: Number, default: 0 },
+    max: { type: Number, default: 9999 },
+    step: { type: Number, default: 1 },
+    unit: { type: String, default: null },
+    modelValue: { type: [Number, String], default: 0 },
+    required: { type: Boolean, default: false },
+    isError: { type: Boolean, default: false },
+    errorMessage: { type: String, default: '' }
 });
 
 const input = ref(null);

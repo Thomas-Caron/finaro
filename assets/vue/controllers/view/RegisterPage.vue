@@ -89,18 +89,8 @@ import useApi from '../../composables/useApi.js';
 const { post } = useApi();
 
 const props = defineProps({
-    url: {
-        type: Object,
-        default: {
-            login: '/',
-        }
-    },
-    api: {
-        type: Object,
-        default: {
-            register: '/',
-        }
-    }
+    url: { type: Object, default: ({}) },
+    api: { type: Object, default: ({}) }
 });
 
 const loading = ref(false);
@@ -116,22 +106,10 @@ const formData = ref({
 });
 
 const errors = ref({
-    lastname: {
-        isError: false,
-        message: ''
-    },
-    firstname: {
-        isError: false,
-        message: ''
-    },
-    email: {
-        isError: false,
-        message: ''
-    },
-    password: {
-        isError: false,
-        message: ''
-    }
+    lastname: { isError: false, message: '' },
+    firstname: { isError: false, message: '' },
+    email: { isError: false, message: '' },
+    password: { isError: false, message: '' }
 });
 
 const handleSubmit = async () => {

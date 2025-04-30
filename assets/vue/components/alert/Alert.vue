@@ -19,10 +19,7 @@ import { computed } from 'vue';
 import Icon from '../icon/Icon.vue';
 
 const props = defineProps({
-    type: {
-        type: String,
-        default: 'error'
-    }
+    type: { type: String, default: 'error' }
 });
 
 const getIcon = computed(() => {

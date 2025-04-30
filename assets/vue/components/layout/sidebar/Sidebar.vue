@@ -64,17 +64,8 @@ import { useSidebarStore } from '../../../stores/useSidebarStore';
 const sidebar = useSidebarStore();
 
 const props = defineProps({
-    user: {
-        type: Object,
-        default: () => ({})
-    },
-    url: {
-        type: Object,
-        default: () => ({})
-    },
-    nav: {
-        type: Object,
-        default: () => ({})
-    }
+    user: { type: Object, default: () => ({}) },
+    url: { type: Object, default: () => ({}) },
+    nav: { type: Object, default: () => ({}) }
 });
 </script>

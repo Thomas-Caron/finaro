@@ -22,21 +22,9 @@
 import Icon from '../icon/Icon.vue';
 
 const props = defineProps({
-    type: {
-        type: String,
-        default: 'button'
-    },
-    color: {
-        type: String,
-        default: 'light'
-    },
-    disabled: {
-        type: Boolean,
-        default: false
-    },
-    loading: {
-        type: Boolean,
-        default: false
-    }
+    type: { type: String, default: 'button' },
+    color: { type: String, default: 'light' },
+    disabled: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false }
 })
 </script>

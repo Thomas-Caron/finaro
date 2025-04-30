@@ -10,9 +10,6 @@
 
 <script setup>
 const props = defineProps({
-    url: {
-        type: String,
-        default: ''
-    }
+    url: { type: String, default: '' }
 })
 </script>

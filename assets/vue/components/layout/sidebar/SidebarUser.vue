@@ -27,7 +27,12 @@
             </button>
             <div
                 id="dropdown-user"
-                class="absolute flex flex-col hidden w-max divide-y divide-stone-200 dark:divide-stone-700 bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800"
+                :class="[
+                    {
+                        'transform -translate-x-full': sidebar.isSmallScreen
+                    },
+                    'absolute flex flex-col hidden w-max divide-y divide-stone-200 dark:divide-stone-700 bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800'
+                ]"
             >
                 <div class="flex flex-row p-2">
                     <span class="w-10 h-10 p-2 flex self-center justify-center align-content-center rounded-lg bg-stone-200 border border-stone-200 dark:border-stone-700">
@@ -62,19 +67,14 @@
 import ButtonThemeSwitch from '../../button/ButtonThemeSwitch.vue';
 import Icon from '../../icon/Icon.vue';
 
+import { useSidebarStore } from '../../../stores/useSidebarStore.js';
+
+const sidebar = useSidebarStore();
+
 const props = defineProps({
-    isCollapsed: {
-        type: Boolean,
-        default: false
-    },
-    user: {
-        type: Object,
-        default: () => ({})
-    },
-    url: {
-        type: Object,
-        default: () => ({})
-    }
+    isCollapsed: { type: Boolean, default: false },
+    user: { type: Object, default: () => ({}) },
+    url: { type: Object, default: () => ({}) }
 });
 
 const handleLogout = () => {
