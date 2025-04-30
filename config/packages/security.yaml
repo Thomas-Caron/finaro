@@ -11,7 +11,7 @@ security:
                 property: email
     firewalls:
         api_register:
-            pattern:   ^/api/register
+            pattern:   ^/api/user/register
             stateless: true
             security: false
 
@@ -49,7 +49,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/api/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user/register, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
