@@ -22,6 +22,11 @@ const useApi = () => {
             }
 
             const response = await fetch(`${apiBaseUrl}${route}`, options);
+
+            if (response.status === 204) {
+                return { success: true };
+            }
+            
             const data = await response.json();
 
             if (!response.ok) {
@@ -45,10 +50,20 @@ const useApi = () => {
         return request("POST", route, body);
     };
 
+    const put = async (route, body = {}) => {
+        return request("PUT", route, body);
+    };
+
+    const del = async (route) => {
+        return request("DELETE", route);
+    };
+
     return {
             error,
             get,
             post,
+            put,
+            del
     };
 };
 
