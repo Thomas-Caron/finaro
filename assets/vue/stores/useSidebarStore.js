@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 export const useSidebarStore = defineStore('sidebar', () => {
     const isCollapsed = ref(false);
@@ -29,10 +29,16 @@ export const useSidebarStore = defineStore('sidebar', () => {
         }
     };
 
+    function closeOnMobile() {
+        if (isSmallScreen.value) {
+            isMobileOpen.value = false;
+        }
+    };
+
     onMounted(() => {
         window.addEventListener('resize', updateScreenWidth);
         updateScreenWidth();
     });
 
-    return { isCollapsed, isSmallScreen, isMobileOpen, toggle }
+    return { isCollapsed, isSmallScreen, isMobileOpen, toggle, closeOnMobile }
 });
