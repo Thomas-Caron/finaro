@@ -18,7 +18,6 @@ class AccountMovementType
     public const FIXED_EXPENSES = 'depenses-fixes';
     public const EXPENSES = 'depenses';
 
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
