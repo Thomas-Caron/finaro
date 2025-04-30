@@ -7,10 +7,7 @@ import { ref, onMounted, onUnmounted, watch } from 'vue';
 import ApexCharts from 'apexcharts';
 
 const props = defineProps({
-    chartData: {
-        type: Array,
-        required: true,
-    },
+    chartData: { type: Array, required: true },
 });
 
 const chart = ref(null);
@@ -72,7 +69,19 @@ const buildOptions = (data) => ({
     plotOptions: {
         bar: {
             horizontal: false,
-            columnWidth: "50%",
+            columnWidth: "70%",
+        },
+    },
+    states: {
+        hover: {
+            filter: {
+                type: 'none',
+            },
+        },
+        active: {
+            filter: {
+                type: 'none',
+            },
         },
     },
     dataLabels: { enabled: false },
@@ -105,13 +114,12 @@ const buildOptions = (data) => ({
     },
 });
 
-const renderChart = () => {
-    if (chartInstance) {
-        chartInstance.destroy();
-    }
+const renderChart = async() => {
+    if (!props.chartData) return;
+    if (chartInstance) await chartInstance.destroy();
 
     chartInstance = new ApexCharts(chart.value, buildOptions(props.chartData));
-    chartInstance.render();
+    await chartInstance.render();
 };
 
 watch(() => props.chartData, () => {
@@ -122,7 +130,9 @@ onMounted(() => {
     renderChart();
 });
 
-onUnmounted(() => {
-    if (chartInstance) chartInstance.destroy();
+onUnmounted(async () => {
+    if (chartInstance) {
+        await chartInstance.destroy();
+    }
 });
 </script>

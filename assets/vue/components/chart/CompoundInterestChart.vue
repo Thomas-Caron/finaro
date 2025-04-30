@@ -7,10 +7,7 @@ import { ref, onMounted, onUnmounted, watch } from 'vue';
 import ApexCharts from 'apexcharts';
 
 const props = defineProps({
-    chartData: {
-        type: Object,
-        required: true,
-    },
+    chartData: { type: Object, required: true },
 });
 
 const chart = ref(null);
@@ -21,12 +18,12 @@ const buildOptions = (data) => ({
         {
             name: "Versement",
             data: data.capital || [],
-            color: "#38b2ac",
+            color: "#38B2AC"
         },
         {
             name: "Intérêts",
             data: data.saving || [],
-            color: "#9f7aea",
+            color: "#9F7AEA"
         },
     ],
     chart: {
@@ -103,11 +100,12 @@ const buildOptions = (data) => ({
     },
 });
 
-const renderChart = () => {
-    if (chartInstance) chartInstance.destroy();
+const renderChart = async () => {
+    if (!props.chartData) return;
+    if (chartInstance) await chartInstance.destroy();
 
     chartInstance = new ApexCharts(chart.value, buildOptions(props.chartData));
-    chartInstance.render();
+    await chartInstance.render();
 };
 
 watch(() => props.chartData, () => {
@@ -118,7 +116,9 @@ onMounted(() => {
     renderChart();
 });
 
-onUnmounted(() => {
-    if (chartInstance) chartInstance.destroy();
+onUnmounted(async () => {
+    if (chartInstance) {
+        await chartInstance.destroy();
+    }
 });
 </script>

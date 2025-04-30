@@ -65,9 +65,9 @@
                 </p>
             </div>
 
-            <div class="relative md:col-span-2 bg-stone-50 rounded-lg shadow-sm dark:bg-stone-900 p-4 md:p-6">
+            <div class="relative md:col-span-2 bg-stone-50 rounded-lg shadow-sm dark:bg-stone-900">
                 <Loader :loading="loading" class="rounded-lg" />
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center p-4">
                     <div class="text-lg font-bold text-stone-700 dark:text-stone-100">Mensualités</div>
                     <div class="text-lg font-semibold text-stone-700 dark:text-stone-100">
                         <span v-if="data.monthlyPayment">{{ getCurrency(data.monthlyPayment) }}</span>
@@ -77,7 +77,7 @@
                     </div>
                 </div>
 
-                <div class="flex justify-between w-full max-w-md mx-auto mt-2">
+                <div class="flex justify-between w-full max-w-md mx-auto px-4">
                     <div class="flex flex-col items-start text-sm text-stone-700 dark:text-stone-100">
                         <span>Coût total du crédit</span>
                         <span>Dont assurance</span>
@@ -88,7 +88,7 @@
                     </div>
                 </div>
 
-                <MortgateLoanChart v-if="data.chartData.length" :chartData="data.chartData" />
+                <MortgateLoanChart v-if="data.chartData.length" class="pt-4 pe-4 xl:pe-0 -mb-4 xl:mb-2" :chartData="data.chartData" />
             </div>
         </div>
     </ContainerApp>
@@ -108,14 +108,8 @@ const { post } = useApi();
 const { getCurrency } = useConvertFilter();
 
 const props = defineProps({
-    url: {
-        type: Object,
-        default: () => ({})
-    },
-    api: {
-        type: Object,
-        default: () => ({})
-    }
+    url: { type: Object, default: () => ({}) },
+    api: { type: Object, default: () => ({}) }
 });
 
 const formData = ref({
