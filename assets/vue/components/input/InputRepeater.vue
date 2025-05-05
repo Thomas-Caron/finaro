@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { reactive, watch, nextTick } from 'vue';
+import { reactive, watch, nextTick, onMounted } from 'vue';
 import Icon from '../icon/Icon.vue';
 import { initDropdowns } from 'flowbite';
 
@@ -106,4 +106,9 @@ const getComponentProps = (field) => {
 
     return props;
 };
+
+onMounted(async () => {
+    await nextTick();
+    initDropdowns();
+});
 </script>
