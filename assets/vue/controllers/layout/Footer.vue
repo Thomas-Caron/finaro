@@ -8,13 +8,7 @@ import Footer from '../../components/layout/footer/Footer.vue';
 import FooterApp from '../../components/layout/footer/FooterApp.vue';
 
 const props = defineProps({
-    isApp: {
-        type: Boolean,
-        default: false
-    },
-    url: {
-        type: Object,
-        default: () => ({})
-    }
+    isApp: { type: Boolean, default: false },
+    url: { type: Object, default: () => ({}) }
 });
 </script>

@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { createToastPlugin } from './vue/plugins/useToast';
 import { registerVueControllerComponents } from '@symfony/ux-vue';
+import useTheme from './vue/composables/useTheme';
 import './bootstrap.js';
 import 'flowbite/dist/flowbite.turbo.js';
 
@@ -16,6 +18,10 @@ import './styles/app.scss';
 
 const app = createApp({});
 const pinia = createPinia();
+
+const { initTheme } = useTheme();
+initTheme();
+createToastPlugin(); 
 
 app.use(pinia);
 

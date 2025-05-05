@@ -17,13 +17,7 @@
 
 <script setup>
 const props = defineProps({
-    url: {
-        type: String,
-        default: ''
-    },
-    color: {
-        type: String,
-        default: 'light'
-    }
+    url: { type: String, default: '' },
+    color: { type: String, default: 'light' }
 })
 </script>

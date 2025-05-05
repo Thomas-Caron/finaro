@@ -6,17 +6,8 @@
 import Navbar from '../../components/layout/navbar/Navbar.vue';
 
 const props = defineProps({
-    isConnected: {
-        type: Boolean,
-        default: false
-    },
-    user: {
-        type: Object,
-        default: () => ({})
-    },
-    url: {
-        type: Object,
-        default: () => ({})
-    }
+    isConnected: { type: Boolean, default: false },
+    user: { type: Object, default: () => ({}) },
+    url: { type: Object, default: () => ({}) }
 });
 </script>

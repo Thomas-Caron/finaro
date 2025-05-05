@@ -65,27 +65,10 @@ import Button from '../../components/button/Button.vue';
 import Input from '../../components/input/Input.vue';
 
 const props = defineProps({
-    lastUsername: {
-        type: String,
-        default: ''
-    },
-    tokenCsrf: {
-        type: String,
-        default: ''
-    },
-    error: {
-        type: String,
-        default: ''
-    },
-    url: {
-        type: Object,
-        default: () => ({
-            'home': '/',
-            'login': '/',
-            'register': '/',
-            'forgetPassword': '/'
-        })
-    }
+    lastUsername: { type: String, default: '' },
+    tokenCsrf: { type: String, default: '' },
+    error: { type: String, default: '' },
+    url: { type: Object, default: () => ({}) }
 });
 
 const form = ref({

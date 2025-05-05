@@ -55,14 +55,8 @@ import ButtonThemeSwitch from '../../button/ButtonThemeSwitch.vue';
 import Icon from '../../icon/Icon.vue';
 
 const props = defineProps({
-    user: {
-        type: Object,
-        default: () => ({})
-    },
-    url: {
-        type: Object,
-        default: () => ({})
-    },
+    user: { type: Object, default: () => ({}) },
+    url: { type: Object, default: () => ({}) },
 });
 
 const handleLogout = () => {

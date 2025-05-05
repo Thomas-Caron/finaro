@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Calculator\Simulator;
 
-use App\Entity\Simulator\CompoundInterestData;
+use App\DataEntity\App\Simulator\CompoundInterestData;
 
 class CompoundInterestCalculator
 {
@@ -35,9 +35,9 @@ class CompoundInterestCalculator
 
             $results[] = [
                 'year' => $year,
-                'interest' => round($cumulativeInterest, 0), // Intérêts générés sur l'année
-                'saving' => round($totalSavings, 0), // Total des versements (capital initial + versements)
-                'capital' => round($capital, 0), // Capital total (épargne + intérêts)
+                'interest' => round($cumulativeInterest, 0),
+                'saving' => round($totalSavings, 0),
+                'capital' => round($capital, 0),
             ];
         }
 

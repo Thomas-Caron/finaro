@@ -6,6 +6,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+    --color-night: #191932;
+    --color-calm: #365A64;
+    --color-fresh: #72C6A9;
+    --color-serene: #95D5C1;
+    --color-dream: #D2BAD2;
+
     --color-dark: #141415;
     --color-violet-lightest: rgba(191,0,255,0.14);
 

@@ -5,6 +5,7 @@
             class="flex items-center p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 group"
             :data-tooltip-target="`tooltip-${data.name.slug}`"
             data-tooltip-placement="right"
+            @click="sidebar.closeOnMobile()"
         >
             
             <span class="w-10 h-10 flex justify-center items-center">
@@ -22,14 +23,12 @@
 import Icon from '../../icon/Icon.vue';
 import Tooltip from '../../tootlip/Tooltip.vue';
 
+import { useSidebarStore } from '../../../stores/useSidebarStore.js';
+
+const sidebar = useSidebarStore();
+
 const props = defineProps({
-    data: {
-        type: Object,
-        default: () => ({})
-    },
-    isCollapsed: {
-        type: Boolean,
-        default: false
-    },
+    data: { type: Object, default: () => ({}) },
+    isCollapsed: { type: Boolean, default: false },
 });
 </script>

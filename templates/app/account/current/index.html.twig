@@ -6,6 +6,34 @@
     <div {{ vue_component('view/app/account/CurrentPage', {
         'url': {
             'current': path('app_account_current')
+        },
+        'api': {
+            'initializeAccount': path('api_account_current_initialize'),
+            'delete': path('api_account_current_movement_remove', {
+                'id': 'id'
+            }),
+            'update': path('api_account_current_movement_update', {
+                'id': 'id'
+            }),
+            'getAccount': path('api_account_current_create'),
+            'getRemainingPrevious': path('api_account_current_movement_get_remaining_previous', {
+                'month': 'month',
+                'year': 'year'
+            }),
+            'getIncomes': path('api_account_current_movement_get_incomes', {
+                'month': 'month',
+                'year': 'year'
+            }),
+            'getFixedExpenses': path('api_account_current_movement_get_fixed_expenses', {
+                'month': 'month',
+                'year': 'year'
+            }),
+            'getExpenses': path('api_account_current_movement_get_expenses', {
+                'month': 'month',
+                'year': 'year'
+            }),
+            'getMonths': path('api_get_months'),
+            'getYears': path('api_get_years')
         }
     }) }}></div>
 {% endblock %}

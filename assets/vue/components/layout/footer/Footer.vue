@@ -33,14 +33,6 @@
 import ButtonMenuLink from '../../button/ButtonNavbarMenu.vue';
 
 const props = defineProps({
-    url: {
-        type: Object,
-        default: () => ({
-            home: '/',
-            contact: '/',
-            terms: '/',
-            privacy: '/'
-        })
-    }
+    url: { type: Object, default: () => ({}) }
 })
 </script>

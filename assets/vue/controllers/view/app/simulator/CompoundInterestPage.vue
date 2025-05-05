@@ -6,7 +6,7 @@
         ]"
     >
         <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-4">
-            <div class="rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900 p-4 md:p-6 flex flex-col justify-between">
+            <div class="rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900 p-4 flex flex-col justify-between">
                 <form @submit.prevent="handleSubmit">
                     <Slider
                         id="initialCapital"
@@ -79,16 +79,16 @@
                 </p>
             </div>
 
-            <div class="relative md:col-span-2 rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900 p-4 md:p-6">
+            <div class="relative md:col-span-2 rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900">
                 <Loader :loading="loading" class="rounded-lg" />
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center p-4">
                     <div class="text-lg font-bold text-stone-700 dark:text-stone-100">Capital final</div>
                     <div class="text-lg font-semibold text-stone-700 dark:text-stone-100">
                         <span v-if="data.capital.length">{{ getCurrency(data.capital[data.capital.length - 1]) }}</span>
                     </div>
                 </div>
 
-                <div class="flex justify-between w-full max-w-md mx-auto mt-2">
+                <div class="flex justify-between w-full max-w-md mx-auto px-4">
                     <div class="flex flex-col items-start text-sm text-stone-700 dark:text-stone-100">
                         <span>Intérêts</span>
                         <span>Versements</span>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <CompoundInterestChart v-if="data" :chartData="data" />
+                <CompoundInterestChart v-if="data" class="pt-4 pe-4 xl:pe-0 -mb-4 xl:mb-2" :chartData="data" />
             </div>
         </div>
     </ContainerApp>
@@ -119,14 +119,8 @@ const { post } = useApi();
 const { getCurrency } = useConvertFilter();
 
 const props = defineProps({
-    url: {
-        type: Object,
-        default: () => ({})
-    },
-    api: {
-        type: Object,
-        default: () => ({})
-    }
+    url: { type: Object, default: () => ({}) },
+    api: { type: Object, default: () => ({}) }
 });
 
 const formData = ref({

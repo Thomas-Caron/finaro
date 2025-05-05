@@ -23,13 +23,7 @@ import SidebarNavDropdown from './SidebarNavDropdown.vue';
 import SidebarNavItem from './SidebarNavItem.vue';
 
 const props = defineProps({
-    isCollapsed: {
-        type: Boolean,
-        default: false
-    },
-    nav: {
-        type: Object,
-        default: () => ({})
-    }
+    isCollapsed: { type: Boolean, default: false },
+    nav: { type: Object, default: () => ({}) }
 });
 </script>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\App\Simulator;
 
-use App\Entity\Simulator\CompoundInterestData;
+use App\DataEntity\App\Simulator\CompoundInterestData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{NumberType};
 use Symfony\Component\Form\FormBuilderInterface;

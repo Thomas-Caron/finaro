@@ -1,14 +1,14 @@
-export default function useConvertFilter() {
+const useConvertFilter = () => {
     const formatters = {
         currency: new Intl.NumberFormat('fr-FR', {
             style: 'currency',
             currency: 'EUR',
             minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
+            maximumFractionDigits: 2,
         }),
         percent: new Intl.NumberFormat('fr-FR', {
             style: 'percent',
-            minimumFractionDigits: 2,
+            minimumFractionDigits: 0,
             maximumFractionDigits: 2,
         }),
         number: (decimals = 0) =>
@@ -24,7 +24,19 @@ export default function useConvertFilter() {
         return Number.isFinite(parsed) ? parsed : 0;
     };
 
-    const getCurrency = (number) => formatters.currency.format(convert(number));
+    const getCurrency = (number) => {
+        const value = convert(number);
+        const isInteger = Number.isInteger(value);
+    
+        const formatter = new Intl.NumberFormat('fr-FR', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: isInteger ? 0 : 2,
+            maximumFractionDigits: 2,
+        });
+    
+        return formatter.format(value);
+    };
 
     const getPercentage = (number) => {
         const value = convert(number) / 100;
@@ -52,3 +64,5 @@ export default function useConvertFilter() {
         formatNumber,
     };
 };
+
+export default useConvertFilter;
