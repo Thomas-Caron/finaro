@@ -14,7 +14,7 @@ final class Version20250424101126 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add preleved_at column to account_movement table';
     }
 
     public function up(Schema $schema): void

@@ -10,18 +10,18 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250424140737 extends AbstractMigration
+final class Version20250505113720 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Change preleved_at to nullable in account_movement table';
+        return 'Remove unique index on label slug';
     }
 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            ALTER TABLE account_movement CHANGE label_id label_id INT DEFAULT NULL, CHANGE preleved_at preleved_at DATETIME DEFAULT NULL
+            DROP INDEX UNIQ_EA750E8989D9B62 ON label
         SQL);
     }
 
@@ -29,7 +29,7 @@ final class Version20250424140737 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            ALTER TABLE `account_movement` CHANGE label_id label_id INT NOT NULL, CHANGE preleved_at preleved_at DATETIME NOT NULL
+            CREATE UNIQUE INDEX UNIQ_EA750E8989D9B62 ON `label` (slug)
         SQL);
     }
 }

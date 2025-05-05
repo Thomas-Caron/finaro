@@ -5,9 +5,11 @@
 {% block body %}
     <div {{ vue_component('view/app/DashboardPage', {
         'url': {
-            'dashboard': path('app_dashboard')
+            'dashboard': path('app_dashboard'),
+            'currentAccount': path('app_account_current')
         },
         'api': {
+            'getAccount': path('api_account_current_create'),
             'getFixedExpenses': path('api_account_current_movement_get_fixed_expenses', {
                 'month': 'month',
                 'year': 'year'

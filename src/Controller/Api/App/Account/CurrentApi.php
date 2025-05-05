@@ -68,7 +68,7 @@ class CurrentApi extends AbstractController
                 ], 200);
             }
         } else {
-            $account = $this->accountManager->createCurrentAccount($this->getUser());
+            $this->accountManager->createCurrentAccount($this->getUser());
             $this->labelManager->createOtherLabel($this->getUser());
 
             return $this->json([

@@ -2,7 +2,15 @@
     <ContainerApp
         :breadcrumbs="breadcrumbs"
     >
-        <InitializeView v-if="initialize" :url="url" :api="api" :date-now="dateNow" />
+        <InitializeView
+            v-if="initialize"
+            :url="url"
+            :api="api"
+            :date="{
+                month: formFilterData.month,
+                year: formFilterData.year
+            }"
+        />
 
         <div v-else>
             <!-- <form v-if="dateData?.months?.length && dateData?.years?.length" class="flex flex-row justify-start mb-6">

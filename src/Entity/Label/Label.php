@@ -27,8 +27,8 @@ class Label
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, unique: true)]
-    #[Gedmo\Slug(fields: ["name"])]
+    #[ORM\Column(length: 255)]
+    #[Gedmo\Slug(fields: ["name"], unique: false)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]

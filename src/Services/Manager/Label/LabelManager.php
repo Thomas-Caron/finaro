@@ -18,7 +18,7 @@ class LabelManager
     public function createLabel(User $owner, string $name, string $color): Label
     {
         $label = new Label();
-        $label->setName($name);
+        $label->setName(ucfirst(strtolower($name)));
         $label->setColor($color);
         $label->setCreatedBy($owner);
 
@@ -29,7 +29,7 @@ class LabelManager
 
     public function createOtherLabel(User $user): Label
     {
-        $label = $this->createLabel($user, strtoupper(Label::OTHER), 'sky');
+        $label = $this->createLabel($user, Label::OTHER, 'sky');
 
         return $label;
     }

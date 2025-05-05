@@ -14,6 +14,7 @@ use App\Entity\Account\Movement\AccountMovement;
 use App\Entity\Account\Movement\AccountMovementType;
 use App\Entity\Date\Month;
 use App\Entity\Date\Year;
+use App\Entity\Label\Label;
 use App\Entity\User\User;
 use App\Services\Helper\DateHelper;
 
@@ -72,6 +73,12 @@ class AccountMovementManager
                 'type' => $accountType,
             ])
         );
+        $accountMovement->setLabel(
+            $this->entityManager->getRepository(Label::class)->findOneBy([
+                'createdBy' => $owner,
+                'slug' => Label::OTHER
+            ])
+        );
         $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($initializeAccountData->getYear()));
         $accountMovement->setMonth($this->entityManager->getRepository(Month::class)->findOneBySlug($initializeAccountData->getMonth()));
         
@@ -95,6 +102,12 @@ class AccountMovementManager
                     'type' => $accountType,
                 ])
             );
+            $accountMovement->setLabel(
+                $this->entityManager->getRepository(Label::class)->findOneBy([
+                    'createdBy' => $owner,
+                    'slug' => Label::OTHER
+                ])
+            );
             $accountMovement->setYear($year);
             $accountMovement->setMonth($month);
             
@@ -112,6 +125,12 @@ class AccountMovementManager
                 $this->entityManager->getRepository(Account::class)->findOneBy([
                     'owner' => $owner,
                     'type' => $accountType,
+                ])
+            );
+            $accountMovement->setLabel(
+                $this->entityManager->getRepository(Label::class)->findOneBy([
+                    'createdBy' => $owner,
+                    'slug' => Label::OTHER
                 ])
             );
             $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($initializeAccountData->getYear()));
@@ -138,6 +157,12 @@ class AccountMovementManager
                     'type' => $accountType,
                 ])
             );
+            $accountMovement->setLabel(
+                $this->entityManager->getRepository(Label::class)->findOneBy([
+                    'createdBy' => $owner,
+                    'slug' => Label::OTHER
+                ])
+            );
             $accountMovement->setYear($year);
             $accountMovement->setMonth($month);
             $accountMovement->setPrelevedAt(
@@ -162,6 +187,12 @@ class AccountMovementManager
                 $this->entityManager->getRepository(Account::class)->findOneBy([
                     'owner' => $owner,
                     'type' => $accountType,
+                ])
+            );
+            $accountMovement->setLabel(
+                $this->entityManager->getRepository(Label::class)->findOneBy([
+                    'createdBy' => $owner,
+                    'slug' => Label::OTHER
                 ])
             );
             $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($initializeAccountData->getYear()));
@@ -193,6 +224,12 @@ class AccountMovementManager
                 $this->entityManager->getRepository(Account::class)->findOneBy([
                     'owner' => $owner,
                     'type' => $accountType,
+                ])
+            );
+            $accountMovement->setLabel(
+                $this->entityManager->getRepository(AccountMovementType::class)->findOneBy([
+                    'createdBy' => $owner,
+                    'slug' => Label::OTHER
                 ])
             );
             $accountMovement->setYear($year);

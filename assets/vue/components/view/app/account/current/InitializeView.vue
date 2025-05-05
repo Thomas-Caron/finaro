@@ -65,7 +65,8 @@ const { post } = useApi();
 
 const props = defineProps({
     url: { type: Object, required: true },
-    api: { type: Object, required: true }
+    api: { type: Object, required: true },
+    date: { type: Object, required: true },
 });
 
 const loading = ref(false);
@@ -85,8 +86,8 @@ const formData = ref({
             day: 1
         }
     ],
-    month: props.dateNow.month,
-    year: props.dateNow.year
+    month: props.date.month,
+    year: props.date.year
 });
 
 const errors = ref({

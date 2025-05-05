@@ -3,6 +3,18 @@
         :breadcrumbs="breadcrumbs"
     >
         <div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6">
+            <div v-if="initialize" class="col-span-2 shadow-sm rounded-lg flex flex-col items-center justify-center p-4 text-stone-500 dark:text-stone-400 bg-stone-50 dark:bg-stone-900">
+                <p>Pas de compte courant pour le moment.</p>
+                <p>Veuillez créer votre compte courant pour commencer.</p>
+                <ButtonLink
+                    class="mt-4"
+                    color="gradient"
+                    :url="props.url.currentAccount"
+                >
+                    Créer mon compte courant
+                </ButtonLink>
+            </div>
+
             <div class="min-h-60 relative shadow-sm rounded-lg flex items-center justify-center p-2 mb-6 md:mb-0 text-stone-500 dark:text-stone-400 bg-stone-50 dark:bg-stone-900">
                 <Loader :loading="loading" />
                 <div class="absolute w-full h-full flex flex-col items-center justify-center">
@@ -32,6 +44,7 @@
 
 <script setup>
 import { ref, computed, reactive, onMounted } from 'vue';
+import ButtonLink from '../../../components/button/ButtonLink.vue';
 import Calendar from '../../../components/calendar/Calendar.vue';
 import ContainerApp from '../../../components/layout/container/ContainerApp.vue';
 import DashboardChart from '../../../components/chart/DashboardChart.vue';
@@ -62,6 +75,7 @@ const formFilterData = reactive({
     year: dateNow.year,
 });
 
+const initialize = ref(false);
 const loading = ref(false);
 const dataCalendar = ref([]);
 const dataCalculated = ref({});
@@ -75,6 +89,14 @@ const breadcrumbs = computed(() => {
         { text: `${selectedMonth} ${selectedYear}` }
     ];
 });
+
+const getAccount = async () => {
+    const response = await get(props.api.getAccount);
+
+    if (response.success) {
+        initialize.value = response.initialize;
+    }
+};
 
 const getMonths = async () => {
     const response = await get(props.api.getMonths);
@@ -135,8 +157,14 @@ const getDataCalculated = async () => {
 };
 
 onMounted(async () => {
+    await getAccount();
     await getMonths();
     await getYears();
+
+    if (initialize.value) {
+        return;
+    }
+    
     await getFixedExpenses();
     await getDataCalculated();
 });
