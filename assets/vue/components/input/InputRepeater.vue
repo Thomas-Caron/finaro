@@ -88,7 +88,7 @@ const add = async () => {
     initDropdowns();
 };
 
-const remove= (index) => {
+const remove = (index) => {
     if (localItems.length > 1) {
         localItems.splice(index, 1);
     }
@@ -102,6 +102,9 @@ const getComponentProps = (field) => {
     }
     if (field.icon) {
         props.icon = field.icon;
+    }
+    if (field.items) {
+        props.items = field.items;
     }
 
     return props;

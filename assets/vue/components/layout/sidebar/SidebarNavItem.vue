@@ -2,7 +2,13 @@
     <li>
         <a 
             :href="data.name.url"
-            class="flex items-center p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 group"
+            :class="[
+                {
+                    'bg-stone-200/30 dark:bg-stone-700/40 text-stone-900 dark:text-stone-300': isActive,
+                    'text-stone-700 dark:text-stone-400': !isActive
+                },
+                'flex items-center p-2 rounded-lg hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300'
+            ]"
             :data-tooltip-target="`tooltip-${data.name.slug}`"
             data-tooltip-placement="right"
             @click="sidebar.closeOnMobile()"
@@ -20,6 +26,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import Icon from '../../icon/Icon.vue';
 import Tooltip from '../../tootlip/Tooltip.vue';
 
@@ -31,4 +38,6 @@ const props = defineProps({
     data: { type: Object, default: () => ({}) },
     isCollapsed: { type: Boolean, default: false },
 });
+
+const isActive = computed(() => window.location.pathname === props.data.name.url);
 </script>

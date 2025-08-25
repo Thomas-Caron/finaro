@@ -21,7 +21,7 @@
                         </li>
                         <li>
                             <ButtonLink color="gradient" :url="url.login">
-                                Se connecter
+                                Connexion
                             </ButtonLink>
                         </li>
                     </ul>
@@ -38,7 +38,7 @@
             </li>
             <li>
                 <ButtonLink color="gradient" :url="url.login">
-                    Se connecter
+                    Connexion
                 </ButtonLink>
             </li>
         </ul>

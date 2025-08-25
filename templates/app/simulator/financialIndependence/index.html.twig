@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simulateur d'indépendance financière{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/app/simulator/FinancialIndependencePage', {
+        'url': {
+            'financialIndependence': path('app_simulator_financial_independence')
+        },
+        'api': {
+            'calculateFinancialIndependence': path('api_simulator_financial_independence_calculate')
+        }
+    }) }}></div>
+{% endblock %}

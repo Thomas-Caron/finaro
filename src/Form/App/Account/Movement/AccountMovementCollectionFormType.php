@@ -7,7 +7,7 @@ namespace App\Form\App\Account\Movement;
 use App\DataEntity\App\Account\Movement\AccountMovementCollectionData;
 use App\Form\App\Account\Movement\AccountMovementFormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{CollectionType, NumberType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

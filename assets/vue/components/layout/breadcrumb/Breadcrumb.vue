@@ -10,7 +10,7 @@
                         'text-stone-400 dark:text-stone-600 hover:text-stone-700 dark:hover:text-stone-300': index !== breadcrumbs.length - 1,
                         'text-stone-700 dark:text-stone-300': index === breadcrumbs.length - 1
                     },
-                    'transtion-all duration-300 ease-in-all'
+                    'capitalize transtion-all duration-300 ease-in-all'
                 ]"
             >
                 {{ item.text }}

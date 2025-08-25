@@ -15,7 +15,12 @@
             'update': path('api_account_current_movement_update', {
                 'id': 'id'
             }),
+            'getLabels': path('api_label_get'),
             'getAccount': path('api_account_current_create'),
+            'getDataCalculatedRemaining': path('api_account_current_calculate_remaining', {
+                'month': 'month',
+                'year': 'year'
+            }),
             'getRemainingPrevious': path('api_account_current_movement_get_remaining_previous', {
                 'month': 'month',
                 'year': 'year'
@@ -24,16 +29,28 @@
                 'month': 'month',
                 'year': 'year'
             }),
+            'getLastIncomes': path('api_account_current_movement_get_last_incomes'),
             'getFixedExpenses': path('api_account_current_movement_get_fixed_expenses', {
                 'month': 'month',
                 'year': 'year'
             }),
+            'getLastFixedExpenses': path('api_account_current_movement_get_last_fixed_expenses'),
             'getExpenses': path('api_account_current_movement_get_expenses', {
                 'month': 'month',
                 'year': 'year'
             }),
-            'getMonths': path('api_get_months'),
-            'getYears': path('api_get_years')
+            'getAvailableMonths': path('api_account_current_get_months_available_by_year', {
+                'year': 'year'
+            }),
+            'getUnavailableMonths': path('api_account_current_get_months_unavailable_by_year', {
+                'year': 'year'
+            }),
+            'getYears': path('api_get_years'),
+            'checkIfMonthExist': path('api_account_current_check_month_exist', {
+                'month': 'month',
+                'year': 'year'
+            }),
+            'createMonth': path('api_account_current_create_month')
         }
     }) }}></div>
 {% endblock %}

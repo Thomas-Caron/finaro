@@ -48,7 +48,7 @@
 </template>
   
 <script setup>
-import { computed, nextTick, watch } from 'vue';
+import { computed, onMounted, nextTick, watch } from 'vue';
 import Badge from '../badge/Badge.vue';
 import { initDropdowns } from 'flowbite';
 
@@ -101,10 +101,17 @@ watch(
     () => props.events,
     async (newEvents) => {
         if (newEvents && newEvents.length > 0) {
-            await nextTick();
-            initDropdowns();
+            await nextTick(() => {
+                initDropdowns();
+            });
         }
     },
     { immediate: false, deep: true }
 );
+
+onMounted(async () => {
+    await nextTick(() => {
+        initDropdowns();
+    });
+})
 </script>

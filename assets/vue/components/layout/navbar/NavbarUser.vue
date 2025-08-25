@@ -1,5 +1,5 @@
 <template>
-        <button type="button" class="flex text-sm rounded-full text-stone-400 dark:text-stone-600 bg-stone-100 dark:bg-stone-200 border border-stone-200 dark:border-stone-700 focus:ring-4 focus:ring-stone-100 dark:focus:ring-stone-400/20" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+        <button type="button" class="flex text-sm rounded-full text-stone-400 dark:text-stone-600 bg-stone-100 dark:bg-stone-200 border border-stone-200 dark:border-stone-700 focus:ring-4 focus:ring-stone-100 dark:focus:ring-stone-400/20 cursor-pointer" aria-expanded="false" data-dropdown-toggle="dropdown-user">
             <span class="sr-only">Open User Menu</span>
             <span class="w-8 h-8 flex items-center justify-center">
                 <Icon class="size-5" name="User" />
@@ -7,7 +7,7 @@
         </button>
         <div 
             id="dropdown-user"
-            class="absolute flex flex-col hidden w-max divide-y divide-stone-200 dark:divide-stone-700 bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800"
+            class="absolute z-50 flex flex-col hidden w-max divide-y divide-stone-200 dark:divide-stone-700 bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800"
         >
             <div class="flex flex-row p-2">
                 <span class="w-10 h-10 p-2 flex self-center justify-center align-content-center rounded-lg bg-stone-200 border border-stone-200 dark:border-stone-700">

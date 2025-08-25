@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Manager\Account;
 
-use App\DataEntity\App\Account\InitializeAccountData;
+use App\DataEntity\App\Account\AccountData;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Account\Account;
 use App\Entity\Account\AccountType;
@@ -47,12 +47,20 @@ class AccountManager
         return $account;
     }
 
-    public function initializeCurrentAccount(InitializeAccountData $initializeAccountData, User $owner)
+    public function initializeCurrentAccount(AccountData $accountData, User $owner)
     {
         $accountType = $this->entityManager->getRepository(AccountType::class)->findOneBy(['slug' => AccountType::CURRENT]);
-        $this->accountMovementManager->initializeStartingBalance($initializeAccountData, $owner, $accountType);
-        $this->accountMovementManager->initializeIncomes($initializeAccountData, $owner, $accountType);
-        $this->accountMovementManager->initializeFixedExpenses($initializeAccountData, $owner, $accountType);
+        $this->accountMovementManager->createRemainingPrevious($accountData, $owner, $accountType, true);
+        $this->accountMovementManager->createIncomes($accountData, $owner, $accountType);
+        $this->accountMovementManager->createFixedExpenses($accountData, $owner, $accountType);
+    }
+
+    public function createMonthCurrentAccount(AccountData $accountData, User $owner)
+    {
+        $accountType = $this->entityManager->getRepository(AccountType::class)->findOneBy(['slug' => AccountType::CURRENT]);
+        $this->accountMovementManager->createRemainingPrevious($accountData, $owner, $accountType, false);
+        $this->accountMovementManager->createIncomes($accountData, $owner, $accountType);
+        $this->accountMovementManager->createFixedExpenses($accountData, $owner, $accountType);
     }
 
     public function flush(Account $account)

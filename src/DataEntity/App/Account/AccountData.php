@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\DataEntity\App\Account;
 
 use App\DataEntity\App\Account\Movement\AccountMovementData;
-use Symfony\Component\Validator\Constraints as Assert;
 
-class InitializeAccountData
+class AccountData
 {
-    #[Assert\NotBlank(message: 'Veuillez saisir une valeur.')]
-    private ?float $startingBalance = null;
+    private array $remainingPrevious = [];
 
     private array $incomes = [];
 
@@ -20,14 +18,27 @@ class InitializeAccountData
 
     private ?int $year = null;
 
-    public function getStartingBalance(): ?float
+    public function getRemainingPrevious(): array
     {
-        return $this->startingBalance;
+        return $this->remainingPrevious;
     }
 
-    public function setStartingBalance(?float $startingBalance): static
+    public function setRemainingPrevious(array $remainingPrevious): static
     {
-        $this->startingBalance = $startingBalance;
+        $this->remainingPrevious = $remainingPrevious;
+
+        return $this;
+    }
+
+    public function addRemainingPrevious(AccountMovementData $remainingPrevious): static
+    {
+        $this->remainingPrevious[] = $remainingPrevious;
+        return $this;
+    }
+
+    public function removeRemainingPrevious(AccountMovementData $remainingPrevious): static
+    {
+        $this->remainingPrevious = array_filter($this->remainingPrevious, fn($item) => $item !== $remainingPrevious);
 
         return $this;
     }

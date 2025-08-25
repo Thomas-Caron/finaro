@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Date;
 
+use App\Repository\Account\Movement\AccountMovementRepository;
 use App\Repository\Date\MonthRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class MonthApi extends AbstractController
 {
     public function __construct(
-        private readonly MonthRepository $monthRepository
+        private readonly MonthRepository $monthRepository,
     ) {
     }
 

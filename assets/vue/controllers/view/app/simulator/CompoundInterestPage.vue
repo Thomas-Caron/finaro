@@ -5,101 +5,106 @@
             { text: 'Intérêts composés', url: props.url.compoundInterest },
         ]"
     >
-        <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-3 gap-4">
-            <div class="rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900 p-4 flex flex-col justify-between">
-                <form @submit.prevent="handleSubmit">
-                    <Slider
-                        id="initialCapital"
-                        lass="mb-3"
-                        name="input_initial_capital"
-                        label="Capital initial"
-                        :min="0"
-                        :max="1000000"
-                        :step="100"
-                        unit="currency"
-                        v-model="formData.initialCapital"
-                        @change="handleSubmit"
-                    />
-
-                    <Slider
-                        id="monthlySavings"
-                        lass="mb-3"
-                        name="input_monthly_savings"
-                        label="Épargne mensuelle"
-                        :min="0"
-                        :max="10000"
-                        :step="50"
-                        unit="currency"
-                        v-model="formData.monthlySavings"
-                        @change="handleSubmit"
-                    />
-
-                    <Slider
-                        id="investmentHorizon"
-                        lass="mb-3"
-                        name="input_investment_horizon"
-                        label="Horizon de placement"
-                        :min="1"
-                        :max="50"
-                        :step="1"
-                        unit="year"
-                        v-model="formData.investmentHorizon"
-                        @change="handleSubmit"
-                    />
-
-                    <Slider
-                        id="interestRate"
-                        lass="mb-3"
-                        name="input_interest_rate"
-                        label="Taux d'intérêt"
-                        :min="0"
-                        :max="20"
-                        :step="0.1"
-                        unit="percentage"
-                        v-model="formData.interestRate"
-                        @change="handleSubmit"
-                    />
-
-                    <Slider
-                        id="interestPaymentInterval"
-                        lass="mb-3"
-                        name="input_interest_payment_interval"
-                        label="Intervalle de versement des intérêts"
-                        :min="1"
-                        :max="12"
-                        :step="1"
-                        unit="month"
-                        v-model="formData.interestPaymentInterval"
-                        @change="handleSubmit"
-                    />
-                </form>
-
-                <p class="border-t border-stone-200 dark:border-stone-700 pt-3 text-stone-500/40">
-                    Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil financier.
-                </p>
+        <div class="flex flex-col gap-4">
+            <div class="w-full rounded-lg shadow-sm p-4 text-stone-500 dark:text-stone-400 bg-stone-50 dark:bg-stone-900">
+                <p>Ce simulateur montre l’évolution théorique de votre capital si vous investissez régulièrement à un taux donné, sans tenir compte des impôts ni de l’inflation.</p>
             </div>
 
-            <div class="relative md:col-span-2 rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900">
-                <Loader :loading="loading" class="rounded-lg" />
-                <div class="flex flex-col items-center p-4">
-                    <div class="text-lg font-bold text-stone-700 dark:text-stone-100">Capital final</div>
-                    <div class="text-lg font-semibold text-stone-700 dark:text-stone-100">
-                        <span v-if="data.capital.length">{{ getCurrency(data.capital[data.capital.length - 1]) }}</span>
-                    </div>
+            <div class="flex flex-col md:flex-row gap-4 items-start">
+                <div class="w-full md:w-1/3 rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900 divide-y divide-stone-200 dark:divide-stone-700">
+                    <form class="p-4" @submit.prevent="handleSubmit">
+                        <Slider
+                            id="initialCapital"
+                            class="mb-3"
+                            name="input_initial_capital"
+                            label="Capital initial"
+                            :min="0"
+                            :max="1000000"
+                            :step="100"
+                            unit="currency"
+                            v-model="formData.initialCapital"
+                            @change="handleSubmit"
+                        />
+
+                        <Slider
+                            id="monthlySavings"
+                            class="mb-3"
+                            name="input_monthly_savings"
+                            label="Épargne mensuelle"
+                            :min="0"
+                            :max="10000"
+                            :step="50"
+                            unit="currency"
+                            v-model="formData.monthlySavings"
+                            @change="handleSubmit"
+                        />
+
+                        <Slider
+                            id="investmentHorizon"
+                            class="mb-3"
+                            name="input_investment_horizon"
+                            label="Horizon de placement"
+                            :min="1"
+                            :max="50"
+                            :step="1"
+                            unit="year"
+                            v-model="formData.investmentHorizon"
+                            @change="handleSubmit"
+                        />
+
+                        <Slider
+                            id="interestRate"
+                            class="mb-3"
+                            name="input_interest_rate"
+                            label="Taux d'intérêt"
+                            :min="0"
+                            :max="20"
+                            :step="0.1"
+                            unit="percentage"
+                            v-model="formData.interestRate"
+                            @change="handleSubmit"
+                        />
+
+                        <Slider
+                            id="interestPaymentInterval"
+                            name="input_interest_payment_interval"
+                            label="Intervalle de versement des intérêts"
+                            :min="1"
+                            :max="12"
+                            :step="1"
+                            unit="month"
+                            v-model="formData.interestPaymentInterval"
+                            @change="handleSubmit"
+                        />
+                    </form>
+
+                    <p class="p-4 text-stone-500/50">
+                        Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil financier.
+                    </p>
                 </div>
 
-                <div class="flex justify-between w-full max-w-md mx-auto px-4">
-                    <div class="flex flex-col items-start text-sm text-stone-700 dark:text-stone-100">
-                        <span>Intérêts</span>
-                        <span>Versements</span>
+                <div class="w-full md:w-2/3 relative rounded-lg shadow-sm bg-stone-50 dark:bg-stone-900">
+                    <Loader :loading="loading" class="rounded-lg" />
+                    <div class="flex flex-col items-center p-4">
+                        <div class="text-lg font-bold text-stone-700 dark:text-stone-100">Capital final</div>
+                        <div class="text-lg font-semibold text-stone-700 dark:text-stone-100">
+                            <span v-if="data.capital.length">{{ getCurrency(data.capital[data.capital.length - 1]) }}</span>
+                        </div>
                     </div>
-                    <div class="flex flex-col items-end text-sm font-medium text-stone-700 dark:text-stone-100">
-                        <span v-if="data.interest.length">{{ getCurrency(data.interest[data.interest.length - 1]) }}</span>
-                        <span v-if="data.saving.length">{{ getCurrency(data.saving[data.saving.length - 1]) }}</span>
-                    </div>
-                </div>
 
-                <CompoundInterestChart v-if="data" class="pt-4 pe-4 xl:pe-0 -mb-4 xl:mb-2" :chartData="data" />
+                    <div class="flex justify-between w-full max-w-md mx-auto px-4">
+                        <div class="flex flex-col items-start text-sm text-stone-700 dark:text-stone-100">
+                            <span>Intérêts</span>
+                            <span>Versements</span>
+                        </div>
+                        <div class="flex flex-col items-end text-sm font-medium text-stone-700 dark:text-stone-100">
+                            <span v-if="data.interest.length">{{ getCurrency(data.interest[data.interest.length - 1]) }}</span>
+                            <span v-if="data.saving.length">{{ getCurrency(data.saving[data.saving.length - 1]) }}</span>
+                        </div>
+                    </div>
+
+                    <CompoundInterestChart v-if="data" class="pt-4 pe-4 xl:pe-0 -mb-4 xl:mb-2" :chartData="data" />
+                </div>
             </div>
         </div>
     </ContainerApp>
@@ -108,7 +113,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import ContainerApp from '../../../../components/layout/container/ContainerApp.vue';
-import CompoundInterestChart from '../../../../components/chart/CompoundInterestChart.vue';
+import CompoundInterestChart from '../../../../components/chart/simulator/CompoundInterestChart.vue';
 import Loader from '../../../../components/loader/Loader.vue';
 import Slider from '../../../../components/input/Slider.vue';
 

@@ -34,9 +34,11 @@
                     'block w-full px-4 py-2 text-sm focus:outline-none'
                 ]"
                 :name="name"
+                :placeholder="placeholder"
                 :value="modelValue"
                 @input="$emit('update:modelValue', $event.target.value)"
                 @change="$emit('change', $event.target.value)"
+                :disabled="disabled"
                 :required="required"
                 :autofocus="autofocus"
             />
@@ -67,10 +69,12 @@ const sidebarStore = useSidebarStore();
 const props = defineProps({
     id: { type: String, required: true },
     name: { type: String, required: true },
+    placeholder: { type: String, required: false },
     label: { type: String, required: false },
     type: { type: String, default: 'text' },
     modelValue: { type: [String, Number], default: '' },
     icon: { type: Object, required: false },
+    disabled: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
     autofocus: { type: Boolean, default: false },
     isError: { type: Boolean, default: false },

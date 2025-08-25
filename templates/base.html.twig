@@ -78,6 +78,14 @@
                             ],
                             'icon': 'Coins'
                         },
+                        'label': {
+                            'name': {
+                                'slug': 'label',
+                                'text': 'Catégories',
+                                'url': path('app_label')
+                            },
+                            'icon': 'Tag',
+                        },
                         'simulator': {
                             'name': {
                                 'slug': 'simulator',
@@ -93,10 +101,29 @@
                                     'slug': 'compoundInterest',
                                     'text': 'Intérêts composés',
                                     'url': path('app_simulator_compound_interest')
+                                },
+                                {
+                                    'slug': 'financialIndependence',
+                                    'text': 'Indépendance financière',
+                                    'url': path('app_simulator_financial_independence')
                                 }
                             ],
                             'icon': 'Calculator'
-                        }
+                        },
+                        'tool': {
+                            'name': {
+                                'slug': 'tool',
+                                'text': 'Outils',
+                            },
+                            'subName': [
+                                {
+                                    'slug': 'emailSignature',
+                                    'text': 'Signature de mail',
+                                    'url': path('app_email_signature')
+                                },
+                            ],
+                            'icon': 'PocketKnife',
+                        },
                     }
                 }) }}></div>
             {% endif %}

@@ -1,105 +1,123 @@
 <template>
     <ContainerApp
+        class="relative"
         :breadcrumbs="breadcrumbs"
+        :api="api"
+        :nav-date="true"
+        :initialize="initialize"
+        :month-exist="monthExist"
+        @update-date="handleUpdateDate"
     >
+
         <InitializeView
-            v-if="initialize"
+            v-if="initialize && !loading"
             :url="url"
             :api="api"
-            :date="{
-                month: formFilterData.month,
-                year: formFilterData.year
-            }"
+            :date="formDataDate"
         />
 
-        <div v-else>
-            <!-- <form v-if="dateData?.months?.length && dateData?.years?.length" class="flex flex-row justify-start mb-6">
-                <Select 
-                    id="selectMonth"
-                    name="select_month"
-                    class="me-4"
-                    :items="dateData.months"
-                    v-model="formFilterData.month"
-                />
-                <Select 
-                    id="selectYear"
-                    name="select_year"
-                    :items="dateData.years"
-                    v-model="formFilterData.year"
-                />
-            </form> -->
+        <EmptyDataMonthCard
+            v-else-if="!monthExist && !loading"
+            :api="props.api"
+        />
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6">
-                <div class="mb-6 md:mb-0">
-                    <RemainingPrevious
-                        class="mb-6"
-                        :api="api"
-                        :date="formFilterData"
-                    />
-                    <Incomes class="mb-6"
-                        :api="api"
-                        :date="formFilterData"
-                    />
-                    <FixedExpenses 
-                        :api="api"
-                        :date="formFilterData"
-                    />
-                </div>
+        <div v-else-if="!loading" class="">
+            <div
+                v-show="movementType === 'income'"
+                class="grid gap-6"
+            >
+                <RemainingPrevious
+                    :api="api"
+                    :date="formDataDate"
+                    @update="handleUpdate"
+                />
+                <Incomes
+                    :api="api"
+                    :date="formDataDate"
+                    @update="handleUpdate"
+                />
+            </div>
 
-                <div>
-                    <Expenses
-                        :api="api"
-                        :date="formFilterData"
-                    />
-                </div>
+            <div 
+                v-show="movementType === 'expense'"
+                class="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
+                <Expenses
+                    :api="api"
+                    :date="formDataDate"
+                    @update="handleUpdate"
+                />
+                <FixedExpenses 
+                    :api="api"
+                    :date="formDataDate"
+                    @update="handleUpdate"
+                />
             </div>
         </div>
     </ContainerApp>
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, provide } from 'vue';
 import ContainerApp from '../../../../components/layout/container/ContainerApp.vue';
+import EmptyDataMonthCard from '../../../../components/card/EmptyDataMonthCard.vue';
 import Expenses from '../../../../components/view/app/account/current/sections/Expenses.vue';
 import FixedExpenses from '../../../../components/view/app/account/current/sections/FixedExpenses.vue';
 import Incomes from '../../../../components/view/app/account/current/sections/Incomes.vue';
 import InitializeView from '../../../../components/view/app/account/current/InitializeView.vue';
-import Select from '../../../../components/input/Select.vue';
 import RemainingPrevious from '../../../../components/view/app/account/current/sections/RemainingPrevious.vue';
 
 import useApi from '../../../../composables/useApi.js';
 import useCurrentDate from '../../../../composables/useCurrentDate.js';
+import useDateFormat from '../../../../composables/useDateFormat.js';
 
 const { get } = useApi();
 const { dateNow } = useCurrentDate();
+const { getStringMonth } = useDateFormat();
 
 const props = defineProps({
     url: { type: Object, default: () => ({}) },
     api: { type: Object, default: () => ({}) }
 });
 
-const initialize = ref(false);
+const initialize = ref(true);
+const loading = ref(true);
+const monthExist = ref(false);
+const labels = ref([]);
+const formDataDate = ref(dateNow);
+const movementType = ref('expense');
+const dataCalculatedRemaining = ref({});
 
-const dateData = ref({
-    years: [],
-    months: []
-});
-
-const formFilterData = reactive({
-    month: dateNow.month,
-    year: dateNow.year,
-});
+provide('labels', labels);
+provide('formDataDate', formDataDate);
+provide('movementType', movementType);
+provide('dataCalculatedRemaining', dataCalculatedRemaining);
 
 const breadcrumbs = computed(() => {
-    const selectedMonth = dateData.value.months.find(item => item.value === formFilterData.month)?.label || '';
-    const selectedYear = dateData.value.years.find(item => item.value === parseInt(formFilterData.year))?.label || '';
-    
     return [
         { text: 'Comptes' },
         { text: 'Compte courant', url: props.url.current },
-        { text: initialize.value ? 'Initialisation' : `${selectedMonth} ${selectedYear}` }
+        { text: initialize.value ? 'Initialisation' : `${getStringMonth(formDataDate?.value.month)} ${formDataDate?.value.year}` }
     ];
 });
+
+const handleUpdateDate = async (data) => {
+    formDataDate.value = { month: data.month, year: data.year };
+
+    if (initialize.value) {
+        return;
+    }
+
+    await checkIfMonthExist();
+
+    if (monthExist.value) {
+        await getDataCalculatedRemaining();
+    }
+};
+
+const handleUpdate = async () => {
+    await getDataCalculatedRemaining();
+};
 
 const getAccount = async () => {
     const response = await get(props.api.getAccount);
@@ -109,39 +127,55 @@ const getAccount = async () => {
     }
 };
 
-const getMonths = async () => {
-    const response = await get(props.api.getMonths);
+const getLabels = async () => {
+    try {
+        const response = await get(props.api.getLabels);
 
-    if (response.success) {
-        dateData.value.months = response.data;
-
-        const foundMonth = dateData.value.years.find(item => item.value === dateNow.month);
-        if (foundMonth) {
-            formFilterData.month = foundMonth.value;
+        if (response.success) {
+            labels.value = response.data.map(item => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    color: item.color
+                };
+            });
         }
+    } catch (errorCatch) {
+        console.error(errorCatch);
     }
 };
 
-const getYears = async () => {
-    const response = await get(props.api.getYears);
+const getDataCalculatedRemaining = async () => {
+    try {
+        const response = await get(props.api.getDataCalculatedRemaining.replace('month', formDataDate.value.month).replace('year', formDataDate.value.year));
 
-    if (response.success) {
-        dateData.value.years = response.data;
-
-        const foundYear = dateData.value.years.find(item => item.value === dateNow.year);
-        if (foundYear) {
-            formFilterData.year = foundYear.value;
+        if (response.success) {
+            dataCalculatedRemaining.value = response.data;
         }
+    } catch (errorCatch) {
+        console.error(errorCatch);
+    }
+};
+
+const checkIfMonthExist = async () => {
+    try {
+        const response = await get(props.api.checkIfMonthExist.replace('month', formDataDate.value.month).replace('year', formDataDate.value.year));
+
+        if (response.success) {
+            monthExist.value = response.exist;
+        }
+    } catch (errorCatch) {
+        console.error(errorCatch);
     }
 };
 
 onMounted(async () => {
     await getAccount();
-    if (initialize.value) {
-        return;
+
+    if (!initialize.value) {
+        await getLabels();
     }
 
-    await getMonths();
-    await getYears();
+    loading.value = false;
 });
 </script>

@@ -8,7 +8,7 @@
                     'flex justify-center items-center w-full text-base text-stone-700 transition duration-75 rounded-lg cursor-pointer dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-300'
             ]"
                 data-dropdown-toggle="dropdown-user"
-                data-dropdown-placement="right"
+                :data-dropdown-placement="sidebar.isSmallScreen ? 'top' : 'right'"
             >
                 <span class="sr-only">Open User Menu</span>
                 <span 
@@ -25,14 +25,10 @@
                 </div>
                 <Icon v-if="!isCollapsed" class="size-5" name="ChevronsUpDown" />
             </button>
+
             <div
                 id="dropdown-user"
-                :class="[
-                    {
-                        'transform -translate-x-full': sidebar.isSmallScreen
-                    },
-                    'absolute flex flex-col hidden w-max divide-y divide-stone-200 dark:divide-stone-700 bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800'
-                ]"
+                class="absolute flex flex-col hidden w-max divide-y divide-stone-200 dark:divide-stone-700 bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800"
             >
                 <div class="flex flex-row p-2">
                     <span class="w-10 h-10 p-2 flex self-center justify-center align-content-center rounded-lg bg-stone-200 border border-stone-200 dark:border-stone-700">
