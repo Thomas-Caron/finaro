@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Form\App\Account\Movement;
+namespace App\Form\App\Label;
 
 use App\DataEntity\App\Label\LabelCollectionData;
 use App\Form\App\Label\LabelFormType;

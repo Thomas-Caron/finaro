@@ -6,7 +6,7 @@ namespace App\Controller\Api\App\Label;
 
 use App\DataEntity\App\Label\LabelCollectionData;
 use App\Entity\Label\Label;
-use App\Form\App\Account\Movement\LabelCollectionFormType;
+use App\Form\App\Label\LabelCollectionFormType;
 use App\Form\App\Label\LabelFormType;
 use App\Repository\Label\LabelRepository;
 use App\Services\Helper\FormHelper;
