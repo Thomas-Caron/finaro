@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditeur de signature de mail{% endblock %}
+
+{% block body %}
+    <div {{ vue_component('view/app/EmailSignaturePage', {
+        'url': {
+            'emailSignature': path('app_email_signature')
+        },
+        'api': {
+            'getAccount': path('api_account_current_create'),
+        }
+    }) }}></div>
+{% endblock %}
