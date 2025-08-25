@@ -5,6 +5,9 @@
 {% block body %}
     <div {{ vue_component('view/HomePage', {
         'api-token': app.session.get('token') ?? null,
-        'url': path('app_homepage'),
+        'url': {
+            'homepage': path('app_homepage'),
+            'dashboard': path('app_dashboard')
+        },
     }) }}></div>
 {% endblock %}

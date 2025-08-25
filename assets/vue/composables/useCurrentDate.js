@@ -1,8 +1,11 @@
+import useDateFormat from "./useDateFormat";'../composables/useDateFormat';
+
 const useCurrentDate = () => {
+    const { getSlugMonth } = useDateFormat();
     const now = new Date();
 
     const dateNow = {
-        month: now.toLocaleString('fr-FR', { month: 'long' }).toLowerCase(),
+        month: getSlugMonth(now.getMonth() + 1),
         year: now.getFullYear()
     };
 

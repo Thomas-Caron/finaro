@@ -5,15 +5,15 @@
     >
         <template #body>
             <form @submit.prevent>
-                <div class="mb-3 flex items-end gap-3">
+                <div class="mb-3 grid grid-cols-2 gap-3">
                     <component
                         v-for="field in update.fields"
                         :is="field.input"
                         :key="field.key"
                         :id="`${id}-${field.key}`"
-                        class="flex-1"
                         :label="field.label"
                         :name="`${id}-${field.key}`"
+                        :disabled="field.disabled ?? false"
                         v-model="update.item[field.key]"
                         v-bind="getComponentProps(field)"
                     />
@@ -59,6 +59,9 @@ const getComponentProps = (field) => {
     }
     if (field.icon) {
         props.icon = field.icon;
+    }
+     if (field.items) {
+        props.items = field.items;
     }
 
     return props;

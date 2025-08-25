@@ -27,11 +27,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class AccountCurrentMovementApi extends AbstractController
 {
     public function __construct(
+        private readonly FormHelper $formHelper,
         private readonly AccountRepository $accountRepository,
         private readonly AccountMovementRepository $accountMovementRepository,
         private readonly AccountTypeRepository $accountTypeRepository,
-        private readonly AccountMovementManager $accountMovementManager,
-        private readonly FormHelper $formHelper
+        private readonly AccountMovementManager $accountMovementManager
     ) {
     }
 
@@ -50,7 +50,8 @@ class AccountCurrentMovementApi extends AbstractController
             $data = array_map(fn($movement) => [
                 'id' => $movement->getId(),
                 'name' => 'initial' === $movement->getDescription() ? 'Solde initial' : 'Restant',
-                'amount' => $movement->getAmount()
+                'amount' => $movement->getAmount(),
+                'transactionDirection' => $movement->getTransactionDirection(),
             ], $remainingPrevious);
 
             return $this->json([
@@ -81,6 +82,38 @@ class AccountCurrentMovementApi extends AbstractController
                 'id' => $movement->getId(),
                 'name' => $movement->getName(),
                 'amount' => $movement->getAmount(),
+                'transactionDirection' => $movement->getTransactionDirection(),
+                'isCharged' => $movement->getIsCharged(),
+            ], $incomes);
+
+            return $this->json([
+                'success' => true,
+                'data' => $data,
+            ], 200);
+        }
+
+        return $this->json([
+            'success' => true,
+            'data' => [],
+        ], 200);
+    }
+
+    #[Route(path: '/account/current/movement/last/incomes', methods: ['GET'], name: 'api_account_current_movement_get_last_incomes')]
+    public function getLastIncomes(): JsonResponse
+    {
+        $currentAccount = $this->accountRepository->findOneBy([
+            'owner' => $this->getUser(),
+            'type' => $this->accountTypeRepository->findOneBySlug(AccountType::CURRENT),
+        ]);
+        $incomes = $this->accountMovementRepository->getLastIncomes($currentAccount);
+            
+        if ($incomes) {
+            $data = array_map(fn($movement) => [
+                'id' => $movement->getId(),
+                'name' => $movement->getName(),
+                'amount' => $movement->getAmount(),
+                'transactionDirection' => $movement->getTransactionDirection(),
+                'isCharged' => $movement->getIsCharged(),
             ], $incomes);
 
             return $this->json([
@@ -139,10 +172,52 @@ class AccountCurrentMovementApi extends AbstractController
         if ($fixedExpenses) {
             $data = array_map(fn($movement) => [
                 'id' => $movement->getId(),
-                // 'label' => $movement->getLabel()->getName(),
+                'label' => [
+                    'id' => $movement->getLabel()->getId(),
+                    'name' => $movement->getLabel()->getName(),
+                    'color' => $movement->getLabel()->getColor(),
+                ],
                 'name' => $movement->getName(),
                 'amount' => $movement->getAmount(),
-                'prelevedAt' => $movement->getPrelevedAt(),
+                'transactionDirection' => $movement->getTransactionDirection(),
+                'isCharged' => $movement->getIsCharged(),
+                'chargedAt' => $movement->getchargedAt(),
+            ], $fixedExpenses);
+
+            return $this->json([
+                'success' => true,
+                'data' => $data,
+            ], 200);
+        }
+
+        return $this->json([
+            'success' => true,
+            'data' => [],
+        ], 200);
+    }
+
+    #[Route(path: '/account/current/movement/last/fixed-expenses', methods: ['GET'], name: 'api_account_current_movement_get_last_fixed_expenses')]
+    public function getLastFixedExpenses(): JsonResponse
+    {
+        $currentAccount = $this->accountRepository->findOneBy([
+            'owner' => $this->getUser(),
+            'type' => $this->accountTypeRepository->findOneBySlug(AccountType::CURRENT),
+        ]);
+        $fixedExpenses = $this->accountMovementRepository->getLastFixedExpenses($currentAccount);
+            
+        if ($fixedExpenses) {
+            $data = array_map(fn($movement) => [
+                'id' => $movement->getId(),
+                'label' => [
+                    'id' => $movement->getLabel()->getId(),
+                    'name' => $movement->getLabel()->getName(),
+                    'color' => $movement->getLabel()->getColor(),
+                ],
+                'name' => $movement->getName(),
+                'amount' => $movement->getAmount(),
+                'transactionDirection' => $movement->getTransactionDirection(),
+                'isCharged' => $movement->getIsCharged(),
+                'chargedAt' => $movement->getchargedAt(),
             ], $fixedExpenses);
 
             return $this->json([
@@ -201,9 +276,15 @@ class AccountCurrentMovementApi extends AbstractController
         if ($expenses) {
             $data = array_map(fn($movement) => [
                 'id' => $movement->getId(),
-                // 'label' => $movement->getLabel()->getName(),
+                'label' => [
+                    'id' => $movement->getLabel()->getId(),
+                    'name' => $movement->getLabel()->getName(),
+                    'color' => $movement->getLabel()->getColor(),
+                ],
                 'name' => $movement->getName(),
                 'amount' => $movement->getAmount(),
+                'transactionDirection' => $movement->getTransactionDirection(),
+                'isCharged' => $movement->getIsCharged(),
             ], $expenses);
 
             return $this->json([

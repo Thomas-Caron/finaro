@@ -6,6 +6,10 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import ApexCharts from 'apexcharts';
 
+import useConvertFilter from '../../../composables/useConvertFilter';
+
+const { getCurrency } = useConvertFilter();
+
 const props = defineProps({
     chartData: { type: Object, required: true },
 });
@@ -16,14 +20,23 @@ let chartInstance = null;
 const buildOptions = (data) => ({
     series: [
         {
-            name: "Versement",
-            data: data.capital || [],
-            color: "#38B2AC"
+            name: "Patrimoine initial",
+            data: data.initialHeritage || [],
+            color: "#FF2056",
         },
         {
-            name: "Intérêts",
-            data: data.saving || [],
-            color: "#9F7AEA"
+            name: "Versement",
+            data: data.initialHeritage.map((value, index) => {
+                return value + (data.deposits?.[index] || 0)
+            }),
+            color: "#38B2AC",
+        },
+        {
+            name: "Intérêt",
+            data: data.initialHeritage.map((value, index) => {
+                return value + (data.deposits?.[index] || 0) + (data.interests?.[index] || 0)
+            }),
+            color: "#9F7AEA",
         },
     ],
     chart: {
@@ -40,24 +53,29 @@ const buildOptions = (data) => ({
         shared: true,
         custom: function({ series, seriesIndex, dataPointIndex }) {
             const year = data.years[dataPointIndex];
-            const capital = data.capital[dataPointIndex]?.toLocaleString("fr-FR") + ' €';
-            const saving = data.saving[dataPointIndex]?.toLocaleString("fr-FR") + ' €';
-            const interest = data.interest[dataPointIndex]?.toLocaleString("fr-FR") + ' €';
+            const initial = getCurrency(data.initialHeritage[dataPointIndex]);
+            const deposit = getCurrency(data.deposits[dataPointIndex]);
+            const interest = getCurrency(data.interests[dataPointIndex]);
+            const total = getCurrency(data.total[dataPointIndex]);
 
             return `<div class="rounded-lg w-64 py-4">
-                        <div class="flex justify-between border-b border-stone-500 pb-2 px-4">
-                            <span class="font-medium text-stone-700 dark:text-stone-300">${year} ${year === 1 ? 'an' : 'ans'}</span>
-                            <span class="font-medium text-stone-700 dark:text-stone-300">${capital}</span>
-                        </div>
-                        <div class="flex justify-between py-2 px-4">
-                            <span class="text-stone-700 dark:text-stone-300">Intérêts :</span>
-                            <span class="font-medium text-teal-500">${interest}</span>
-                        </div>
-                        <div class="flex justify-between px-4">
-                            <span class="text-stone-700 dark:text-stone-300">Versement :</span>
-                            <span class="font-medium text-purple-500">${saving}</span>
-                        </div>
-                    </div>`;
+                    <div class="flex justify-between border-b border-stone-500 pb-2 px-4">
+                        <span class="font-medium text-stone-700 dark:text-stone-300">${year} ${year === 1 ? 'an' : 'ans'}</span>
+                        <span class="font-medium text-stone-700 dark:text-stone-300">${total}</span>
+                    </div>
+                    <div class="flex justify-between pt-4 px-4">
+                        <span class="text-stone-700 dark:text-stone-300">Intérêt :</span>
+                        <span class="font-medium text-purple-500">${interest}</span>
+                    </div>
+                    <div class="flex justify-between py-2 px-4">
+                        <span class="text-stone-700 dark:text-stone-300">Versement :</span>
+                        <span class="font-medium text-teal-500">${deposit}</span>
+                    </div>
+                    <div class="flex justify-between px-4">
+                        <span class="text-stone-700 dark:text-stone-300">Patrimoine initial :</span>
+                        <span class="font-medium text-rose-500">${initial}</span>
+                    </div>
+                </div>`;
         },
     },
     legend: { show: false },

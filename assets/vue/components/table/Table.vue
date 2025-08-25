@@ -1,6 +1,4 @@
 <template>
-    <h2 v-if="label" class="mb-3 text-stone-900 dark:text-stone-50">{{ label }}</h2>
-    
     <table
         v-if="rows.length > 0 || loading"
         class="w-full relative shadow-sm rounded-lg text-sm text-left rtl:text-right text-stone-500 dark:text-stone-400 bg-stone-200 dark:bg-stone-800"
@@ -38,7 +36,12 @@
                         'px-2 py-1 font-medium text-stone-900 truncate max-w-20 dark:text-stone-50',
                     ]"
                 >
-                    {{ row[column.key] }}
+                    <span 
+                        v-if="/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(row[column.key])"
+                        class="w-5 h-5 rounded-lg block border border-stone-300 dark:border-stone-500"
+                        :style="`background-color: ${row[column.key]};`"
+                    ></span>
+                    <span v-else>{{ row[column.key] }}</span>
                 </td>
                 <td 
                     scope="row"
@@ -50,56 +53,54 @@
                     <button
                         type="button"
                         class="rounded-lg p-2 hover:bg-stone-100 dark:hover:bg-stone-600 cursor-pointer"
-                        :data-dropdown-toggle="`dropdown-${id}-${rowIndex}`"
+                        :data-dropdown-toggle="`dropdown-${rowIndex}`"
                         data-dropdown-placement="bottom"
-                        @click=""
                     >
                         <span class="sr-only">Actions</span>
                         <Icon class="size-6 text-stone-700 dark:text-stone-300" name="Ellipsis" />
                     </button>
                     <div
-                        :id="`dropdown-${id}-${rowIndex}`"
+                        :id="`dropdown-${rowIndex}`"
                         class="absolute flex flex-col hidden z-10 w-max divide-y divide-stone-200 dark:divide-stone-700 bg-stone-100 border border-stone-200 rounded-lg shadow-md dark:border-stone-700 dark:bg-stone-800"
                     >
                         <div class="p-2 font-semibold text-center">
                             Actions
                         </div>
                         <div class="p-2">
-                            <button 
+                            <button
                                 v-if="actions.modify"
                                 class="relative flex items-center w-full p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 cursor-pointer"
-                                :data-modal-target="`modal-modify-${id}-${rowIndex}`"
-                                :data-modal-toggle="`modal-modify-${id}-${rowIndex}`"
+                                :data-modal-target="`modal-modify-${rowIndex}`"
+                                :data-modal-toggle="`modal-modify-${rowIndex}`"
                             >
                                 <Icon class="size-5 me-2" name="Pen" />Modifier
                             </button>
                             <button
-                                v-if="actions.remove"
+                                v-if="actions.delete(row)"
                                 class="relative flex items-center w-full p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 cursor-pointer"
-                                :data-modal-target="`modal-remove-${id}-${rowIndex}`"
-                                :data-modal-toggle="`modal-remove-${id}-${rowIndex}`"
+                                :data-modal-target="`modal-remove-${rowIndex}`"
+                                :data-modal-toggle="`modal-remove-${rowIndex}`"
                             >
                                 <Icon class="size-5 me-2" name="X" />Supprimer
-                            </button>
-                            <button v-if="actions.preleve" class="relative flex items-center w-full p-2 text-stone-700 rounded-lg dark:text-stone-400 hover:bg-stone-200/30 dark:hover:bg-stone-700/40 hover:text-stone-900 dark:hover:text-stone-300 cursor-pointer">
-                                <Icon class="size-5 me-2" name="TicketCheck" />Prélevé
-                                <Badge>Soon</Badge>
                             </button>
                         </div>
                     </div>
                     <ModalUpdate
                         v-if="actions.modify"
-                        :id="`modal-modify-${id}-${rowIndex}`"
+                        :id="`modal-modify-${rowIndex}`"
                         title="Modifier"
                         :update="{
-                            fields: update?.fields,
-                            item: update.data?.find(item => item.id === row.id)
+                            fields: update?.fields.map(f => ({
+                                ...f,
+                                disabled: typeof f.disabled === 'function' ? f.disabled(row) : f.disabled
+                            })),
+                            item: update.item?.find(item => item.id === row.id)
                         }"
-                        @update="(newData) => emit('update', { id: row.id, data: newData })"
+                        @update="(newData) => emit('update', newData)"
                     />
                     <ModalDelete
-                        v-if="actions.remove"
-                        :id="`modal-remove-${id}-${rowIndex}`"
+                        v-if="actions.delete(row)"
+                        :id="`modal-remove-${rowIndex}`"
                         title="Supprimer"
                         @delete="emit('delete', row.id)"
                     />
@@ -115,7 +116,6 @@
 
 <script setup>
 import { nextTick, watch } from 'vue';
-import Badge from '../badge/Badge.vue';
 import Icon from '../icon/Icon.vue';
 import Loader from '../loader/Loader.vue';
 import ModalDelete from '../modal/ModalDelete.vue';
@@ -125,22 +125,21 @@ import { initDropdowns, initModals } from 'flowbite';
 const emit = defineEmits(['update', 'delete']);
 
 const props = defineProps({
-    id: { type: String, required: true },
-    label: { type: String, required: false },
     columns: { type: Array, required: true },
     rows: { type: Array, required: true },
-    actions: { type: Object, default: () => ({ }) },
+    loading: { type: Boolean, default: false },
     update: { type: Object, default: () => ({}) },
-    loading: { type: Boolean, default: false }
+    actions: { type: Object, default: () => ({}) },
 });
 
 watch(
     () => props.rows,
     async (newRows) => {
         if (newRows && newRows.length > 0) {
-            await nextTick();
-            initDropdowns();
-            initModals();
+            await nextTick(() => {
+                initDropdowns();
+                initModals();
+            });
         }
     },
     { immediate: false, deep: true }

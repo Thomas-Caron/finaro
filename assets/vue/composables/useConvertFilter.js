@@ -56,12 +56,21 @@ const useConvertFilter = () => {
 
     const formatNumber = (number, decimals = 0) => formatters.number(decimals).format(convert(number));
 
+    const capitalize = (str) => {
+        if (typeof str !== 'string') {
+            return str;
+        }
+
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
     return {
         getCurrency,
         getPercentage,
         getYear,
         getMonth,
         formatNumber,
+        capitalize
     };
 };
 

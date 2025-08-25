@@ -29,6 +29,11 @@ Encore
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 
+    .configureWatchOptions(() => ({
+        ignored: /node_modules|public\/build/,
+        poll: 1000,
+    }))
+
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()

@@ -4,15 +4,22 @@ declare(strict_types=1);
 
 namespace App\DataEntity\App\Account\Movement;
 
+use App\Entity\Account\Movement\Enum\TransactionDirection;
+use App\Entity\Label\Label;
+
 class AccountMovementData
 {
     private ?int $id = null;
 
-    private ?string $label = null;
+    private ?Label $label = null;
 
     private ?string $name = null;
 
     private ?float $amount = null;
+
+    private ?TransactionDirection $transactionDirection = null;
+    
+    private ?bool $isCharged = null;
 
     private ?int $day = null;
 
@@ -28,12 +35,12 @@ class AccountMovementData
         return $this;
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): ?Label
     {
         return $this->label;
     }
 
-    public function setLabel(?string $label): static
+    public function setLabel(?Label $label): static
     {
         $this->label = $label;
 
@@ -60,6 +67,30 @@ class AccountMovementData
     public function setAmount(?float $amount): static
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getTransactionDirection(): ?TransactionDirection
+    {
+        return $this->transactionDirection;
+    }
+
+    public function setTransactionDirection(?TransactionDirection $transactionDirection): static
+    {
+        $this->transactionDirection = $transactionDirection;
+
+        return $this;
+    }
+
+    public function isCharged(): ?bool
+    {
+        return $this->isCharged;
+    }
+    
+    public function setIsCharged(?bool $isCharged): static
+    {
+        $this->isCharged = $isCharged;
 
         return $this;
     }

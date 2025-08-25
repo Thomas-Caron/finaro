@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace App\Form\App\Account;
 
-use App\DataEntity\App\Account\InitializeAccountData;
+use App\DataEntity\App\Account\AccountData;
 use App\Form\App\Account\Movement\AccountMovementFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{CollectionType, NumberType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InitializeAccountFormType extends AbstractType
+class AccountFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('startingBalance', NumberType::class)
+            ->add('remainingPrevious', CollectionType::class, [
+                'entry_type' => AccountMovementFormType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
             ->add('incomes', CollectionType::class, [
                 'entry_type' => AccountMovementFormType::class,
                 'allow_add' => true,
@@ -37,7 +42,7 @@ class InitializeAccountFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => InitializeAccountData::class,
+            'data_class' => AccountData::class,
             'csrf_protection' => false,
         ]);
     }

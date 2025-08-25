@@ -11,8 +11,18 @@
             :is-collapsed="isCollapsed"
         />
 
+        <SidebarNavItem
+            :data="nav.label"
+            :is-collapsed="isCollapsed"
+        />
+
         <SidebarNavDropdown
             :data="nav.simulator"
+            :is-collapsed="isCollapsed"
+        />
+
+        <SidebarNavDropdown
+            :data="nav.tool"
             :is-collapsed="isCollapsed"
         />
     </ul>

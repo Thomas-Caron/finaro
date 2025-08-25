@@ -6,6 +6,10 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import ApexCharts from 'apexcharts';
 
+import useConvertFilter from '../../../composables/useConvertFilter';
+
+const { getCurrency } = useConvertFilter();
+
 const props = defineProps({
     chartData: { type: Array, required: true },
 });
@@ -48,19 +52,19 @@ const buildOptions = (data) => ({
             return `<div class="rounded-lg w-64 py-4">
                         <div class="flex justify-between border-b border-stone-500 pb-2 px-4">
                             <span class="font-medium text-stone-700 dark:text-stone-300">${d.year} ${1 === d.year ? 'an' : 'ans'}</span>
-                            <span class="font-medium text-stone-700 dark:text-stone-300">${(d.insurance + d.interest + d.capital).toLocaleString("fr-FR")} €</span>
+                            <span class="font-medium text-stone-700 dark:text-stone-300">${getCurrency(d.insurance + d.interest + d.capital)}</span>
                         </div>
                         <div class="flex justify-between py-2 px-4">
                             <span class="text-stone-700 dark:text-stone-300">Assurance :</span>
-                            <span class="font-medium text-red-500">${d.insurance.toLocaleString("fr-FR")} €</span>
+                            <span class="font-medium text-red-500">${getCurrency(d.insurance)}</span>
                         </div>
                         <div class="flex justify-between py-2 px-4">
                             <span class="text-stone-700 dark:text-stone-300">Intérêts :</span>
-                            <span class="font-medium text-purple-500">${d.interest.toLocaleString("fr-FR")} €</span>
+                            <span class="font-medium text-purple-500">${getCurrency(d.interest)}</span>
                         </div>
                         <div class="flex justify-between px-4">
                             <span class="text-stone-700 dark:text-stone-300">Capital :</span>
-                            <span class="font-medium text-teal-500">${d.capital.toLocaleString("fr-FR")} €</span>
+                            <span class="font-medium text-teal-500">${getCurrency(d.capital)}</span>
                         </div>
                     </div>`;
         },

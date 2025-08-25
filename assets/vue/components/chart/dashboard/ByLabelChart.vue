@@ -6,33 +6,50 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import ApexCharts from 'apexcharts';
 
-import useTheme from '../../composables/useTheme.js';
+import useConvertFilter from '../../../composables/useConvertFilter.js';
+import useTheme from '../../../composables/useTheme.js';
 
+const { getCurrency } = useConvertFilter();
 const { isDark } = useTheme();
 
 const props = defineProps({
-    chartData: { type: Object, required: true },
+    chartData: {
+        type: Object,
+        required: true
+    }
 });
 
 const chart = ref(null);
 let chartInstance = null;
 
 const buildOptions = (data) => ({
-    series: [data.totalRemainingPercent, data.totalSpentPercent],
+    series: data.series,
+    labels: data.labels,
     chart: {
         height: "100%",
-        maxWidth: "100%",
-        type: "donut",
+        width: "100%",
+        type: "pie",
     },
-    colors: ['#95D5C1', isDark.value ? '#57534D' : '#D6D3D1'],
+    colors: data.colors,
     legend: {
-        show: false,
+        show: true,
+        position: 'bottom',
+        labels: {
+            colors: isDark.value ? '#E5E5E5' : '#4B5563',
+        }
     },
     tooltip: {
-        enabled: false,
+        enabled: true,
+        y: {
+            formatter: (value) => getCurrency(value)
+        }
     },
     dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: (val) => `${Math.round(val)}%`,
+        dropShadow: {
+            enabled: false
+        }
     },
     stroke: {
         show: true,
@@ -40,31 +57,17 @@ const buildOptions = (data) => ({
     },
     plotOptions: {
         pie: {
-            expandOnClick: false
+            expandOnClick: true,
         }
     },
     states: {
-        hover: {
-            filter: {
-                type: 'none',
-            },
-        },
-        active: {
-            filter: {
-                type: 'none',
-            },
-        },
-    }    
+        hover: { filter: { type: 'none' } },
+        active: { filter: { type: 'none' } },
+    }
 });
 
 const renderChart = async () => {
-    if (
-        !props.chartData ||
-        typeof props.chartData.totalRemainingPercent !== 'number' ||
-        typeof props.chartData.totalSpentPercent !== 'number'
-    ) {
-        return;
-    }
+    if (!props.chartData || !props.chartData.series?.length) return;
 
     if (chartInstance) await chartInstance.destroy();
 
@@ -73,15 +76,15 @@ const renderChart = async () => {
 };
 
 watch(() => props.chartData, () => {
-    renderChart();
+    renderChart()
 }, { deep: true });
 
 watch(isDark, () => {
-    renderChart();
+    renderChart()
 });
 
 onMounted(() => {
-    renderChart();
+    renderChart()
 });
 
 onUnmounted(async () => {

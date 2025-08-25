@@ -81,6 +81,40 @@ class AccountMovementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getLastIncomes(Account $account): array
+    {
+        $movementType = $this->getEntityManager()->getRepository(AccountMovementType::class)->findOneBy([
+                'slug' => AccountMovementType::INCOMES
+        ]);
+        
+        $last = $this->createQueryBuilder('a')
+            ->where('a.account = :account')
+            ->andWhere('a.movementType = :movementType')
+            ->setParameter('account', $account)
+            ->setParameter('movementType', $movementType) 
+            ->orderBy('a.year', 'DESC')
+            ->addOrderBy('a.month', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($last !== null) {
+            return $this->createQueryBuilder('a')
+                ->where('a.account = :account')
+                ->andWhere('a.movementType = :movementType')
+                ->andWhere('a.year = :year')
+                ->andWhere('a.month = :month')
+                ->setParameter('account', $account)
+                ->setParameter('movementType', $movementType)
+                ->setParameter('year', $last->getYear())
+                ->setParameter('month', $last->getMonth())
+                ->getQuery()
+                ->getResult();
+        }
+
+        return [];
+    }
+
     public function getFixedExpenses(Account $account, Month $month, Year $year): array
     {
         return $this->createQueryBuilder('a')
@@ -98,6 +132,40 @@ class AccountMovementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getLastFixedExpenses(Account $account): array
+    {
+        $movementType = $this->getEntityManager()->getRepository(AccountMovementType::class)->findOneBy([
+                'slug' => AccountMovementType::FIXED_EXPENSES
+        ]);
+
+        $last = $this->createQueryBuilder('a')
+            ->where('a.account = :account')
+            ->andWhere('a.movementType = :movementType')
+            ->setParameter('account', $account)
+            ->setParameter('movementType', $movementType) 
+            ->orderBy('a.year', 'DESC')
+            ->addOrderBy('a.month', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($last !== null) {
+            return $this->createQueryBuilder('a')
+                ->where('a.account = :account')
+                ->andWhere('a.movementType = :movementType')
+                ->andWhere('a.year = :year')
+                ->andWhere('a.month = :month')
+                ->setParameter('account', $account)
+                ->setParameter('movementType', $movementType)
+                ->setParameter('year', $last->getYear())
+                ->setParameter('month', $last->getMonth())
+                ->getQuery()
+                ->getResult();
+        }
+
+        return [];
+    }
+
     public function getExpenses(Account $account, Month $month, Year $year): array
     {
         return $this->createQueryBuilder('a')
@@ -113,5 +181,78 @@ class AccountMovementRepository extends ServiceEntityRepository
             ))
             ->getQuery()
             ->getResult();
+    }
+
+    public function getMonthsWithMovementsByYear(Account $account, Year $year): array
+    {
+        $monthIds = $this->createQueryBuilder('a')
+            ->select('DISTINCT IDENTITY(a.month)')
+            ->where('a.account = :account')
+            ->andWhere('a.year = :year')
+            ->setParameter('account', $account)
+            ->setParameter('year', $year)
+            ->groupBy('a.month')
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        $queryBuilder = $this->getEntityManager()->getRepository(Month::class)->createQueryBuilder('m');
+        $queryBuilder->where('m.id IN (:monthsIds)')
+            ->setParameter('monthsIds', $monthIds)
+            ->orderBy('m.position', 'ASC')
+        ;
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getMonthsWithoutMovementsByYear(Account $account, Year $year): array
+    {
+        $initialMonth = $this->createQueryBuilder('a')
+            ->select('IDENTITY(a.month) as monthId')
+            ->where('a.account = :account')
+            ->andWhere('a.year = :year')
+            ->andWhere('a.description = :initialDesc')
+            ->setParameter('account', $account)
+            ->setParameter('year', $year)
+            ->setParameter('initialDesc', 'initial')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+        $initialMonthId = $initialMonth['monthId'] ?? null;
+
+        $initialMonth = $this->getEntityManager()->getRepository(Month::class)->createQueryBuilder('m')
+            ->where('m.id = :initialMonthId')
+            ->setParameter('initialMonthId', $initialMonthId)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        $monthIds = $this->createQueryBuilder('a')
+            ->select('DISTINCT IDENTITY(a.month)')
+            ->where('a.account = :account')
+            ->andWhere('a.year = :year')
+            ->setParameter('account', $account)
+            ->setParameter('year', $year)
+            ->groupBy('a.month')
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        $excludeIds = $monthIds;
+        if ($initialMonth !== null) {
+            $excludeIds[] = $initialMonth->getId();
+        }
+
+        $queryBuilder = $this->getEntityManager()->getRepository(Month::class)->createQueryBuilder('m');
+
+        if (!empty($excludeIds)) {
+            $queryBuilder->where('m.id NOT IN (:excludeIds)')
+                ->setParameter('excludeIds', $excludeIds);
+            if ($initialMonth !== null) {
+                $queryBuilder->andWhere('m.position >= :initialPosition')
+                    ->setParameter('initialPosition', $initialMonth->getPosition());
+            }
+        }
+
+        $queryBuilder->orderBy('m.position', 'ASC');
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

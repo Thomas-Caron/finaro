@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Manager\Account\Movement;
 
-use App\DataEntity\App\Account\InitializeAccountData;
+use App\DataEntity\App\Account\AccountData;
 use App\DataEntity\App\Account\Movement\AccountMovementCollectionData;
 use App\DataEntity\App\Account\Movement\AccountMovementData;
 use App\Entity\Account\Account;
@@ -62,25 +62,24 @@ class AccountMovementManager
         return $accountMovement;
     }
 
-    public function initializeStartingBalance(InitializeAccountData $initializeAccountData, User $owner, AccountType $accountType)
+    public function createRemainingPrevious(AccountData $accountData, User $owner, AccountType $accountType, bool $initialize)
     {
-        $accountMovement = new AccountMovement();
-        $accountMovement->setAmount($initializeAccountData->getStartingBalance());
-        $accountMovement->setDescription('initial');
-        $accountMovement->setAccount(
-            $this->entityManager->getRepository(Account::class)->findOneBy([
-                'owner' => $owner,
-                'type' => $accountType,
-            ])
-        );
-        $accountMovement->setLabel(
-            $this->entityManager->getRepository(Label::class)->findOneBy([
-                'createdBy' => $owner,
-                'slug' => Label::OTHER
-            ])
-        );
-        $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($initializeAccountData->getYear()));
-        $accountMovement->setMonth($this->entityManager->getRepository(Month::class)->findOneBySlug($initializeAccountData->getMonth()));
+        foreach ($accountData->getRemainingPrevious() as $movement) {
+            $accountMovement = new AccountMovement();
+            $accountMovement->setAmount($movement->getAmount());
+            $accountMovement->setTransactionDirection($movement->getTransactionDirection()); 
+            if ($initialize) {
+                $accountMovement->setDescription('initial'); 
+            } 
+            $accountMovement->setAccount(
+                $this->entityManager->getRepository(Account::class)->findOneBy([
+                    'owner' => $owner,
+                    'type' => $accountType,
+                ])
+            );
+            $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($accountData->getYear()));
+            $accountMovement->setMonth($this->entityManager->getRepository(Month::class)->findOneBySlug($accountData->getMonth()));
+        };
         
         $this->createAccountMovementRemainingPrevious($accountMovement);
     }
@@ -102,12 +101,7 @@ class AccountMovementManager
                     'type' => $accountType,
                 ])
             );
-            $accountMovement->setLabel(
-                $this->entityManager->getRepository(Label::class)->findOneBy([
-                    'createdBy' => $owner,
-                    'slug' => Label::OTHER
-                ])
-            );
+            $accountMovement->setTransactionDirection($movement->getTransactionDirection());
             $accountMovement->setYear($year);
             $accountMovement->setMonth($month);
             
@@ -115,9 +109,9 @@ class AccountMovementManager
         }
     }
 
-    public function initializeIncomes(InitializeAccountData $initializeAccountData, User $owner, AccountType $accountType)
+    public function createIncomes(AccountData $accountData, User $owner, AccountType $accountType)
     {
-        foreach ($initializeAccountData->getIncomes() as $movement) {
+        foreach ($accountData->getIncomes() as $movement) {
             $accountMovement = new AccountMovement();
             $accountMovement->setName($movement->getName());
             $accountMovement->setAmount($movement->getAmount());
@@ -127,14 +121,19 @@ class AccountMovementManager
                     'type' => $accountType,
                 ])
             );
-            $accountMovement->setLabel(
-                $this->entityManager->getRepository(Label::class)->findOneBy([
-                    'createdBy' => $owner,
-                    'slug' => Label::OTHER
-                ])
-            );
-            $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($initializeAccountData->getYear()));
-            $accountMovement->setMonth($this->entityManager->getRepository(Month::class)->findOneBySlug($initializeAccountData->getMonth()));
+            if ($movement->getLabel()) {
+                $accountMovement->setLabel($movement->getLabel());
+            } else {
+                $accountMovement->setLabel(
+                    $this->entityManager->getRepository(Label::class)->findOneBy([
+                        'createdBy' => $owner,
+                        'slug' => Label::OTHER
+                    ])
+                );
+            }
+            $accountMovement->setTransactionDirection($movement->getTransactionDirection());
+            $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($accountData->getYear()));
+            $accountMovement->setMonth($this->entityManager->getRepository(Month::class)->findOneBySlug($accountData->getMonth()));
             
             $this->createAccountMovementIncomes($accountMovement);
         }
@@ -157,29 +156,26 @@ class AccountMovementManager
                     'type' => $accountType,
                 ])
             );
-            $accountMovement->setLabel(
-                $this->entityManager->getRepository(Label::class)->findOneBy([
-                    'createdBy' => $owner,
-                    'slug' => Label::OTHER
-                ])
-            );
-            $accountMovement->setYear($year);
-            $accountMovement->setMonth($month);
-            $accountMovement->setPrelevedAt(
+            $accountMovement->setLabel($movement->getLabel());
+            $accountMovement->setTransactionDirection($movement->getTransactionDirection());
+            $accountMovement->setIsCharged($movement->isCharged());
+            $accountMovement->setChargedAt(
                 $this->dateHelper->createDateFromParts(
                     $movement->getDay(),
                     $month->getSlug(),
                     $year->getValue()
                 )
             );
+            $accountMovement->setYear($year);
+            $accountMovement->setMonth($month);
             
             $this->createAccountMovementFixedExpenses($accountMovement);
         }
     }
 
-    public function initializeFixedExpenses(InitializeAccountData $initializeAccountData, User $owner, AccountType $accountType)
+    public function createFixedExpenses(AccountData $accountData, User $owner, AccountType $accountType)
     {
-        foreach ($initializeAccountData->getFixedExpenses() as $movement) {
+        foreach ($accountData->getFixedExpenses() as $movement) {
             $accountMovement = new AccountMovement();
             $accountMovement->setName($movement->getName());
             $accountMovement->setAmount($movement->getAmount());
@@ -189,19 +185,24 @@ class AccountMovementManager
                     'type' => $accountType,
                 ])
             );
-            $accountMovement->setLabel(
-                $this->entityManager->getRepository(Label::class)->findOneBy([
-                    'createdBy' => $owner,
-                    'slug' => Label::OTHER
-                ])
-            );
-            $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($initializeAccountData->getYear()));
-            $accountMovement->setMonth($this->entityManager->getRepository(Month::class)->findOneBySlug($initializeAccountData->getMonth()));
-            $accountMovement->setPrelevedAt(
+            if ($movement->getLabel()) {
+                $accountMovement->setLabel($movement->getLabel());
+            } else {
+                $accountMovement->setLabel(
+                    $this->entityManager->getRepository(Label::class)->findOneBy([
+                        'createdBy' => $owner,
+                        'slug' => Label::OTHER
+                    ])
+                );
+            }
+            $accountMovement->setTransactionDirection($movement->getTransactionDirection()); 
+            $accountMovement->setYear($this->entityManager->getRepository(Year::class)->findOneByValue($accountData->getYear()));
+            $accountMovement->setMonth($this->entityManager->getRepository(Month::class)->findOneBySlug($accountData->getMonth()));
+            $accountMovement->setChargedAt(
                 $this->dateHelper->createDateFromParts(
                     $movement->getDay(),
-                    $initializeAccountData->getMonth(),
-                    $initializeAccountData->getYear()
+                    $accountData->getMonth(),
+                    $accountData->getYear()
                 )
             );
             
@@ -226,12 +227,9 @@ class AccountMovementManager
                     'type' => $accountType,
                 ])
             );
-            $accountMovement->setLabel(
-                $this->entityManager->getRepository(AccountMovementType::class)->findOneBy([
-                    'createdBy' => $owner,
-                    'slug' => Label::OTHER
-                ])
-            );
+            $accountMovement->setLabel($movement->getLabel());
+            $accountMovement->setTransactionDirection($movement->getTransactionDirection());
+            $accountMovement->setIsCharged($movement->isCharged());
             $accountMovement->setYear($year);
             $accountMovement->setMonth($month);
             
@@ -247,16 +245,28 @@ class AccountMovementManager
 
     public function update(AccountMovement $accountMovement, AccountMovementData $accountMovementModified)
     {
-        if ($accountMovementModified->getName()) {
+        if (null !== $accountMovementModified->getName()) {
             $accountMovement->setName($accountMovementModified->getName());
         }
 
-        if ($accountMovementModified->getAmount()) {
+        if (null !== $accountMovementModified->getLabel()) {
+            $accountMovement->setLabel($accountMovementModified->getLabel());
+        }
+
+        if (null !== $accountMovementModified->getAmount()) {
             $accountMovement->setAmount($accountMovementModified->getAmount());
         }
 
-        if ($accountMovementModified->getDay()) {
-            $accountMovement->setPrelevedAt(
+        if (null !== $accountMovementModified->getTransactionDirection()) {
+            $accountMovement->setTransactionDirection($accountMovementModified->getTransactionDirection());
+        }
+
+        if (null !== $accountMovementModified->isCharged()) {
+            $accountMovement->setIsCharged($accountMovementModified->isCharged());
+        }
+
+        if (null !== $accountMovementModified->getDay()) {
+            $accountMovement->setChargedAt(
                 $this->dateHelper->createDateFromParts(
                     $accountMovementModified->getDay(),
                     $accountMovement->getMonth()->getSlug(),

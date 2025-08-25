@@ -44,7 +44,7 @@ class Label
     /**
      * @var Collection<int, AccountMovement>
      */
-    #[ORM\OneToMany(targetEntity: AccountMovement::class, mappedBy: 'label', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: AccountMovement::class, mappedBy: 'label', orphanRemoval: false)]
     private Collection $accountMovements;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

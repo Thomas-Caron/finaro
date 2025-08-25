@@ -26,13 +26,13 @@
                 :max="max"
                 :step="step"
                 :value="modelValue"
-                @input="$emit('update:modelValue', $event.target.value)"
-                @change="$emit('change', $event.target.value)"
+                @input="$emit('update:modelValue', +$event.target.value)"
+                @change="$emit('change', +$event.target.value)"
             />
 
             <div 
                 ref="containerUnit"
-                class="absolute top-6 left-0 whitespace-nowrap w-max transform bg-stone-300/30 dark:bg-stone-700/40 text-sm px-2 py-1 rounded-md text-black dark:text-white"
+                class="absolute top-6 left-0 whitespace-nowrap w-max transform bg-stone-300/30 dark:bg-stone-700/40 text-sm px-2 py-1 rounded-md text-stone-700 dark:text-stone-200"
                 :style="{ left: `${containerUnitLeft}px` }"
             >
                 <span>
@@ -89,6 +89,8 @@ const getUnit = computed(() => {
             return getYear(props.modelValue);
         case 'month':
             return getMonth(props.modelValue);
+        case 'px':
+            return formatNumber(props.modelValue, 0) + 'px';
         default:
             return formatNumber(props.modelValue, 0);
     };

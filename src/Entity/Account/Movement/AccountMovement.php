@@ -7,6 +7,7 @@ namespace App\Entity\Account\Movement;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use App\Entity\Account\Account;
+use App\Entity\Account\Movement\Enum\TransactionDirection;
 use App\Entity\Date\Month;
 use App\Entity\Date\Year;
 use App\Entity\Label\Label;
@@ -51,8 +52,14 @@ class AccountMovement
     #[ORM\JoinColumn(nullable: false)]
     private ?Month $month = null;
 
+    #[ORM\Column(type: 'string', enumType: TransactionDirection::class, nullable: false)]
+    private TransactionDirection $transactionDirection = TransactionDirection::DEBIT;
+
+    #[ORM\Column]
+    private ?bool $isCharged = false;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $prelevedAt = null;
+    private ?\DateTimeInterface $chargedAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
@@ -163,14 +170,38 @@ class AccountMovement
         return $this;
     }
 
-    public function getPrelevedAt(): ?\DateTimeInterface
+    public function getTransactionDirection(): ?TransactionDirection
     {
-        return $this->prelevedAt;
+        return $this->transactionDirection;
     }
 
-    public function setPrelevedAt(?\DateTimeInterface $prelevedAt): static
+    public function setTransactionDirection(?TransactionDirection $transactionDirection): static
     {
-        $this->prelevedAt = $prelevedAt;
+        $this->transactionDirection = $transactionDirection;
+
+        return $this;
+    }
+
+    public function getIsCharged(): ?bool
+    {
+        return $this->isCharged;
+    }
+
+    public function setIsCharged(?bool $isCharged): static
+    {
+        $this->isCharged = $isCharged;
+
+        return $this;
+    }
+
+    public function getChargedAt(): ?\DateTimeInterface
+    {
+        return $this->chargedAt;
+    }
+
+    public function setChargedAt(?\DateTimeInterface $chargedAt): static
+    {
+        $this->chargedAt = $chargedAt;
 
         return $this;
     }

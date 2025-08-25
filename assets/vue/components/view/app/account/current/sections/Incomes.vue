@@ -13,100 +13,96 @@
             </button>
         </div>
 
-        <Table
-            id="incomes"
-            :columns="[
-                { key: 'name', label: 'Nom' },
-                { key: 'amount', label: 'Montant' },
-            ]"
-            :rows="dataTable"
-            :actions="{
-                modify: true,
-                remove: true,
-                preleve: false
-            }"
-            :loading="loading"
-            :update="{
-                fields: [
-                    { key: 'name', label: 'Nom', input: Input, type: 'text' },
-                    { key: 'amount', label: 'Montant', input: Input, type: 'number', icon: { direction: 'right', name: 'Euro' } }
-                ],
-                data: data
-            }"
-            @update="handleUpdate"
-            @delete="handleDelete"
-        />
+        <VueDraggable
+            v-if="data.length > 0"
+            class="grid gap-3"
+            ghost-class="opacity-25"
+            handle=".handle"
+            :disabled="data.length === 1"
+            :animation="200"
+            v-model="data"
+            @start=""
+            @update=""
+            @end=""
+        >
+            <MovementItemCard
+                v-for="(item, index) in data"
+                :key="index"
+                id="incomes"
+                :data="item"
+                :actions="{
+                    charge: false,
+                    move: data.length > 1,
+                    name: true,
+                    remove: data.length > 1,
+                    removeConfirm: true
+                }"
+                @update="handleUpdate"
+                @delete="handleDelete"
+            />
+        </VueDraggable>
 
-        <Modal
+        <div v-else class="w-full relative shadow-sm rounded-lg flex items-center justify-center py-5 text-stone-500 dark:text-stone-400 bg-stone-50 dark:bg-stone-900">
+            <Loader :loading="loading" class="rounded-lg"/>
+            Aucune donnée disponible
+        </div>
+
+        <ModalAdd
             ref="modal"
             id="modal-add-incomes"
             title="Ajouter un revenu"
-            @close="formData.collection = [{ name: '', amount: 0 }]"
-        >
-            <template #body>
-                <form @submit.prevent="handleSubmit">
-                    <InputRepeater
-                        id="modal-form-incomes"
-                        class="mb-5"
-                        :fields="[
-                            { key: 'name', label: 'Nom', input: Input, type: 'text' },
-                            { key: 'amount', label: 'Montant', input: Input, type: 'number', icon: { direction: 'right', name: 'Euro' } }
-                        ]"
-                        v-model:items="formData.collection"
-                    />
-
-                    <Button 
-                        class="w-full"
-                        color="gradient"
-                        type="submit"
-                        :loading="loading"
-                        :disabled="loading"
-                    >
-                        Ajouter
-                    </Button>
-                </form>
-            </template>
-        </Modal>
+            :charge="false"
+            @add="handleSubmit"
+        />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import Button from '../../../../../button/Button.vue';
+import { ref, reactive, onMounted, watch, provide, inject } from 'vue';
 import Icon from '../../../../../icon/Icon.vue';
-import Input from '../../../../../input/Input.vue';
-import InputRepeater from '../../../../../input/InputRepeater.vue';
-import Modal from '../../../../../modal/Modal.vue';
-import Table from '../../../../../table/Table.vue';
-import useApi  from '../../../../../../composables/useApi.js';
-import useConvertFilter from '../../../../../../composables/useConvertFilter.js';
+import Loader from '../../../../../loader/Loader.vue';
+import ModalAdd from '../../../../../modal/ModalAdd.vue';
+import MovementItemCard from '../../../../../card/MovementItemCard.vue';
+
+import useApi  from '../../../../../../composables/useApi';
+import useGenerateId from '../../../../../../composables/useGenerateId';
+import { useToast } from '../../../../../../plugins/useToast';
+import { VueDraggable } from 'vue-draggable-plus';
 
 const { get, post, put, del } = useApi();
-const { getCurrency } = useConvertFilter();
+const { uniqueId } = useGenerateId();
+const toast = useToast();
+
+const emit = defineEmits(['update']);
 
 const props = defineProps({
-    api: { type: Object, required: true },
-    date: { type: Object, required: true }
+    api: { type: Object, required: true }
 });
+
+const formDataDate = inject('formDataDate');
 
 const modal = ref(null);
 const loading = ref(false);
 const data = ref([]);
-const dataTable = ref([]);
 
-const formData = ref({
-    collection: [
-        {
-            name: '',
-            amount: 0
-        }
-    ]
+const createDefaultData = () => ({
+    id: uniqueId(),
+    name: '',
+    amount: 0,
+    transactionDirection: 'credit',
 });
+
+const formData = reactive({
+    collection: [createDefaultData()]
+});
+
+provide('createDefaultData', createDefaultData);
+provide('formData', formData);
 
 const getIncomes = async () => {
     try {
         loading.value = true;
-        const response = await get(props.api.getIncomes.replace('month', props.date.month).replace('year', props.date.year));
+        const response = await get(props.api.getIncomes.replace('month', formDataDate.value.month).replace('year', formDataDate.value.year));
 
         if (response.success) {
             data.value = response.data.map(item => {
@@ -114,13 +110,7 @@ const getIncomes = async () => {
                     id: item.id,
                     name: item.name,
                     amount: item.amount,
-                };
-            });
-            dataTable.value = response.data.map(item => {
-                return {
-                    id: item.id,
-                    name: item.name,
-                    amount: getCurrency(item.amount),
+                    transactionDirection: item.transactionDirection,
                 };
             });
             loading.value = false;
@@ -133,12 +123,19 @@ const getIncomes = async () => {
 const handleSubmit = async () => {
     try {
         loading.value = true;
-        const response = await post(props.api.getIncomes.replace('month', props.date.month).replace('year', props.date.year), formData.value);
+        const payload = {
+            collection: formData.collection.map(({id, ...item}) => ({
+                ...item,
+            }))
+        };
+        const response = await post(props.api.getIncomes.replace('month', formDataDate.value.month).replace('year', formDataDate.value.year), payload);
 
         if (response.success) {
-            loading.value = false;
             modal.value.close();
+            loading.value = false;
+            toast.default('🎉 Ajouté avec succès !');
             await getIncomes();
+            emit('update');
         } else {
             loading.value = false;
             for (const [key, messages] of Object.entries(response.errors)) {
@@ -155,11 +152,12 @@ const handleSubmit = async () => {
 
 const handleUpdate = async (data) => {
     try {
-        const response = await put(props.api.update.replace('id', data.id), data.data);
+        const response = await put(props.api.update.replace('id', data.id), data);
 
         if (response.success) {
             await getIncomes();
             toast.default('🎉 Modifié avec succès !');
+            emit('update');
         }
     } catch (errorCatch) {
         console.error(errorCatch);
@@ -173,11 +171,16 @@ const handleDelete = async (id) => {
         if (response.success) {
             await getIncomes();
             toast.default('🎉 Supprimé avec succès !');
+            emit('update');
         }
     } catch (errorCatch) {
         console.error(errorCatch);
     }
 };
+
+watch(() => formDataDate.value, async () => {
+    await getIncomes();
+}, { deep: true });
 
 onMounted(async () => {
     await getIncomes();
