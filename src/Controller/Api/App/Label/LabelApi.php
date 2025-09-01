@@ -39,6 +39,7 @@ class LabelApi extends AbstractController
             'name' => $label->getName(),
             'slug' => $label->getSlug(),
             'color' => $label->getColor(),
+            'icon' => $label->getIcon(),
             'updatedAt' => $label->getUpdatedAt(),
             'createdAt' => $label->getCreatedAt(),
         ], $labels);

@@ -5,7 +5,7 @@
     >
         <template #body>
             <form @submit.prevent>
-                <div class="mb-3 grid grid-cols-2 gap-3">
+                <div class="mb-3 grid grid-cols-3 gap-3">
                     <component
                         v-for="field in update.fields"
                         :is="field.input"

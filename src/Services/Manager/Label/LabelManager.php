@@ -32,6 +32,7 @@ class LabelManager
         $label = new Label();
         $label->setName(ucfirst(strtolower(Label::OTHER)));
         $label->setColor('#A3A3A3');
+        $label->setIcon('Package');
         $label->setCreatedBy($user);
 
         $label = $this->createLabel($label);
@@ -47,6 +48,7 @@ class LabelManager
             $newLabel = new Label();
             $newLabel->setName($label->getName());
             $newLabel->setColor($label->getColor());
+            $newLabel->setIcon($label->getIcon());
             $newLabel->setCreatedBy($user);
             
             $this->createLabel($newLabel);
@@ -61,6 +63,10 @@ class LabelManager
 
         if (null !== $labelModified->getColor()) {
             $label->setColor($labelModified->getColor());
+        }
+
+        if (null !== $labelModified->getIcon()) {
+            $label->setIcon($labelModified->getIcon());
         }
         
         $this->flush($label);

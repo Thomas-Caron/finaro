@@ -34,6 +34,10 @@ class Label
     #[ORM\Column(length: 255)]
     private ?string $color = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $icon = null;
+
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
@@ -97,6 +101,18 @@ class Label
     public function setColor(string $color): static
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): static
+    {
+        $this->icon = $icon;
 
         return $this;
     }

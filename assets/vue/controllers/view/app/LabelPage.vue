@@ -17,6 +17,7 @@
             :columns="[
                 { key: 'name', label: 'Nom' },
                 { key: 'color', label: 'Couleur' },
+                { key: 'icon', label: 'Icône' },
                 { key: 'updatedAt', label: 'Modifié le' },
                 { key: 'createdAt', label: 'Créé le' }
             ]"
@@ -24,7 +25,8 @@
             :update="{
                 fields: [
                     { key: 'name', label: 'Nom', input: Input, type: 'text', disabled: (row) => row.slug === 'autre' },
-                    { key: 'color', label: 'Couleur', input: ColorPicker }
+                    { key: 'color', label: 'Couleur', input: ColorPicker },
+                    { key: 'icon', label: 'Icône', input: IconPicker }
                 ],
                 item: data
             }"
@@ -50,6 +52,7 @@
                     :fields="[
                         { key: 'name', label: 'Nom', input: Input, type: 'text' },
                         { key: 'color', label: 'Couleur', input: ColorPicker },
+                        { key: 'icon', label: 'Icône', input: IconPicker }
                     ]"
                     v-model:items="formData.collection"
                 />
@@ -76,6 +79,7 @@ import Button from '../../../components/button/Button.vue';
 import ColorPicker from '../../../components/input/ColorPicker.vue';
 import ContainerApp from '../../../components/layout/container/ContainerApp.vue';
 import Icon from '../../../components/icon/Icon.vue';
+import IconPicker from '../../../components/input/IconPicker.vue';
 import Input from '../../../components/input/Input.vue';
 import InputRepeater from '../../../components/input/InputRepeater.vue';
 import Modal from '../../../components/modal/Modal.vue';
@@ -106,7 +110,8 @@ const data = ref([]);
 
 const createDefaultData = () => ({
     name: '',
-    color: ''
+    color: '',
+    icon: ''
 });
 
 const formData = reactive({
@@ -125,6 +130,7 @@ const getLabels = async () => {
                     name: item.name,
                     slug: item.slug,
                     color: item.color,
+                    icon: item.icon,
                     updatedAt: toFullDateFormatted(item.updatedAt),
                     createdAt: toFullDateFormatted(item.createdAt)
                 };
@@ -143,6 +149,8 @@ const handleSubmit = async () => {
             toast.error('❌ Le nom ne peut pas être vide');
         } else if (!emptyField.color?.trim()) {
             toast.error('❌ La couleur ne peut pas être vide');
+        } else if (!emptyField.icon?.trim()) {
+            toast.error('❌ L\'icône ne peut pas être vide');
         }
         return;
     }
@@ -162,12 +170,14 @@ const handleSubmit = async () => {
 };
 
 const handleUpdate = async (data) => {
-    const emptyField = !data.name?.trim() || !data.color?.trim();
+    const emptyField = !data.name?.trim() || !data.color?.trim() || !data.icon?.trim();
     if (emptyField) {
         if (!emptyField.name?.trim()) {
             toast.error('❌ Le nom ne peut pas être vide');
         } else if (!emptyField.color?.trim()) {
             toast.error('❌ La couleur ne peut pas être vide');
+        } else if (!emptyField.icon?.trim()) {
+            toast.error('❌ L\'icône ne peut pas être vide');
         }
         return;
     }

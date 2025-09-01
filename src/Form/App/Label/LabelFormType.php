@@ -22,7 +22,13 @@ class LabelFormType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => true,
             ])
+            ->add('slug', TextType::class, [
+                'required' => false,
+            ])
             ->add('color', TextType::class, [
+                'required' => true,
+            ])
+            ->add('icon', TextType::class, [
                 'required' => true,
             ])
             ->add('updatedAt', HiddenType::class, [
