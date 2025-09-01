@@ -5,9 +5,9 @@ export default {
                 binding.value(event);
             }
         };
-        document.addEventListener("click", el.clickOutsideEvent);
+        document.addEventListener("pointerdown", el.clickOutsideEvent);
     },
     unmounted(el) {
-        document.removeEventListener("click", el.clickOutsideEvent);
+        document.removeEventListener("pointerdown", el.clickOutsideEvent);
     }
 };
