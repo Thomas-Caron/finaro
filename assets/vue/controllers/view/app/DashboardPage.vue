@@ -148,7 +148,8 @@ const getLabels = async () => {
                 return {
                     id: item.id,
                     name: item.name,
-                    color: item.color
+                    color: item.color,
+                    icon: item.icon
                 };
             });
         }

@@ -199,7 +199,8 @@ const getLastFixedExpenses = async () => {
                     label: {
                         id: item.label.id,
                         name: item.label.name,
-                        color: item.label.color
+                        color: item.label.color,
+                        icon: item.label.icon
                     },
                     name: item.name,
                     amount: item.amount,

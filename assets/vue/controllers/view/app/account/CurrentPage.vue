@@ -136,7 +136,8 @@ const getLabels = async () => {
                 return {
                     id: item.id,
                     name: item.name,
-                    color: item.color
+                    color: item.color,
+                    icon: item.icon
                 };
             });
         }
@@ -171,10 +172,7 @@ const checkIfMonthExist = async () => {
 
 onMounted(async () => {
     await getAccount();
-
-    if (!initialize.value) {
-        await getLabels();
-    }
+    await getLabels();
 
     loading.value = false;
 });
