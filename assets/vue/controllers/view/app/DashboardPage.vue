@@ -1,5 +1,7 @@
 <template>
+    <Loader v-if="loading" :loading="loading" />
     <ContainerApp
+        v-else
         :breadcrumbs="breadcrumbs"
         :api="api"
         :nav-date="true"

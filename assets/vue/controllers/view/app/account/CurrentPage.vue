@@ -1,5 +1,7 @@
 <template>
+    <Loader v-if="loading" :loading="loading" />
     <ContainerApp
+        v-else
         class="relative"
         :breadcrumbs="breadcrumbs"
         :api="api"
@@ -65,6 +67,7 @@ import Expenses from '../../../../components/view/app/account/current/sections/E
 import FixedExpenses from '../../../../components/view/app/account/current/sections/FixedExpenses.vue';
 import Incomes from '../../../../components/view/app/account/current/sections/Incomes.vue';
 import InitializeView from '../../../../components/view/app/account/current/InitializeView.vue';
+import Loader from '../../../../components/loader/Loader.vue';
 import RemainingPrevious from '../../../../components/view/app/account/current/sections/RemainingPrevious.vue';
 
 import useApi from '../../../../composables/useApi.js';

@@ -37,7 +37,17 @@
                 <div class="flex flex-row items-center text-sm text-stone-400 dark:text-stone-600">
                     <Icon class="size-4 mr-2" name="Scale" />Restant estimé
                 </div>
-                <div class="text-center text-stone-600 dark:text-stone-300">{{ getCurrency(dataCalculatedRemaining.totalRemaining) }}</div>
+                <div
+                    :class="[
+                        {
+                            'text-serene': dataCalculatedRemaining.totalRemaining >= 0,
+                            'text-rose-500': dataCalculatedRemaining.totalRemaining < 0
+                        },
+                        'text-center '
+                    ]"
+                >
+                    {{ getCurrency(dataCalculatedRemaining.totalRemaining) }}
+                </div>
             </div>
         </div>
     </div>
