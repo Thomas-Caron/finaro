@@ -40,8 +40,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import Icon from '../icon/Icon.vue';
+import { initModals } from 'flowbite';
 
 defineOptions({ inheritAttrs: false });
 
@@ -73,6 +74,9 @@ const observer = new MutationObserver((mutations) => {
 });
 
 onMounted(() => {
+    nextTick(() => {
+        initModals();
+    });
     if (modal.value) {
         observer.observe(modal.value, {
             attributes: true,

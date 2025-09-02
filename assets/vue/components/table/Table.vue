@@ -1,12 +1,12 @@
 <template>
     <div 
-        class="w-full relative overflow-x-auto shadow-sm rounded-lg min-h-[80px]"
+        class="w-full relative shadow-sm rounded-lg min-h-[80px]"
     >
         <Loader v-if="loading" :loading="loading" />
         
         <table 
             v-if="rows.length > 0"
-            class="w-full text-sm text-left rtl:text-right text-stone-500 dark:text-stone-400 bg-stone-200 dark:bg-stone-800"
+            class="w-full rounded-lg text-sm text-left rtl:text-right text-stone-500 dark:text-stone-400 bg-stone-200 dark:bg-stone-800"
         >
             <thead class="text-xs text-stone-700 uppercase dark:text-stone-400">
                 <tr>

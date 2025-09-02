@@ -16,12 +16,12 @@
             v-if="data.label"
             class="h-full flex items-center pe-2"
         >
-            <label
+            <div
                 class="rounded-full w-10 h-10 flex items-center justify-center border border-stone-200 dark:border-stone-700"
                 :style="`background-color: ${data.label.color}`"
             >
                 <Icon :class="`size-4 ${getContrastColor(data.label.color)}`" :name="data.label.icon" />
-            </label>
+            </div>
         </div>
 
         <div class="flex flex-col flex-1 min-w-0 pe-4 text-stone-500 dark:text-stone-400">
@@ -200,7 +200,7 @@ import useColor from '../../composables/useColor';
 import useConvertFilter from '../../composables/useConvertFilter';
 import useDateFormat from '../../composables/useDateFormat';
 import { useToast } from '../../plugins/useToast';
-import clickOutside from '../../directives/clickOutside';
+import clickOutside from '../../directives/clickOutsideDown';
 
 const { getContrastColor } = useColor();
 const { getCurrency } = useConvertFilter();
